@@ -64,6 +64,7 @@
                 this.loggedIn = false;
             });
             netlifyIdentity.init();
+            document.title += " - Draw";
         }
     }
 

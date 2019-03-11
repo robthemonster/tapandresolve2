@@ -1,4 +1,3 @@
-//FIXME: put actual api url
 export const EMPTY_CARD = {
     name: "",
     oracle_text: "",

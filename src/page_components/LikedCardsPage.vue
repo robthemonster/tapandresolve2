@@ -113,6 +113,7 @@
             });
             netlifyIdentity.init();
             this.fetchLikedCards();
+            document.title += " - Liked";
         },
         watch: {
             'loggedIn': function () {

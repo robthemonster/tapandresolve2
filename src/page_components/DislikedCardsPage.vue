@@ -114,6 +114,8 @@
             });
             netlifyIdentity.init();
             this.fetchDislikedCards();
+            document.title += " - Disliked";
+
         },
         watch: {
             'loggedIn': function () {

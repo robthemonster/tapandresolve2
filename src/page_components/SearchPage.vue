@@ -117,6 +117,7 @@
                 this.loggedIn = false;
             });
             netlifyIdentity.init();
+            document.title += " - Search";
         },
         watch: {
             'searchString': function () {

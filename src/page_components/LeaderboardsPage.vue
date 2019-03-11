@@ -118,6 +118,7 @@
                 this.loggedIn = false;
             });
             netlifyIdentity.init();
+            document.title += " - Leaderboards";
         }
     }
 </script>

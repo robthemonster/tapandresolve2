@@ -97,6 +97,7 @@
                 this.loggedIn = false;
             });
             netlifyIdentity.init();
+            document.title += " - About";
         }
     }
 </script>
