@@ -1,7 +1,8 @@
 <template>
     <b-modal ref="modal_ref" id="card_modal" class="text-dark" size="lg" :title="card.name" centered scrollable>
         <DrawCardImage :image_uri="card.image_uris.border_crop"></DrawCardImage>
-        <DrawCardVoteBar :loggedIn="loggedIn" :downvotes="card.dislikedCount" :upvotes="card.likedCount"></DrawCardVoteBar>
+        <DrawCardVoteBar :loggedIn="loggedIn" :downvotes="card.dislikedCount"
+                         :upvotes="card.likedCount"></DrawCardVoteBar>
         <div v-if="!card.card_faces">
             <p>{{card.oracle_text}}</p>
             <p><i>{{card.flavor_text}}</i></p>
@@ -69,9 +70,17 @@
         mounted() {
             const outerThis = this;
             this.$emit('fetchCardStatusById', this.card.id);
-            this.$root.$on('bv::modal::hidden', function(bvEvent, modalId){
+            this.$root.$on('bv::modal::hidden', function (bvEvent, modalId) {
                 if (modalId === 'card_modal') {
                     outerThis.$emit('modal-closed-event');
+                }
+            });
+            this.$root.$on('bv::modal::show', function (bvEvent, modalId) {
+                if (modalId === "card_modal") {
+                    outerThis.$gtm.trackEvent({
+                        category: 'modal_interaction',
+                        action: 'modal_open'
+                    });
                 }
             })
         },
@@ -101,7 +110,11 @@
                             outerThis.$emit('fetchCardStatusById', response.data.id);
                         });
                 });
-
+                const event = liked ? "unliked" : "liked";
+                this.$gtm.trackEvent({
+                    category: 'modal_interaction',
+                    action: 'modal_' + event
+                });
             },
             toggleDislikedStatus(disliked) {
                 const outerThis = this;
@@ -113,6 +126,11 @@
                             outerThis.$emit('updateCardDetailsFromModal', response.data);
                             outerThis.$emit('fetchCardStatusById', response.data.id);
                         });
+                });
+                const event = disliked ? "undisliked" : "disliked";
+                this.$gtm.trackEvent({
+                    category: 'modal_interaction',
+                    action: 'modal_' + event
                 });
             },
             closeModal() {
@@ -149,7 +167,7 @@
                     }
                 })
             },
-            'card.id': function() {
+            'card.id': function () {
                 this.$emit('fetchCardStatusById', this.card.id);
             }
         }

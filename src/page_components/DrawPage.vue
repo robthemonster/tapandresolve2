@@ -18,6 +18,12 @@
     import NavBar from "../components/NavBar.vue"
     import Footer from "../components/Footer.vue"
     import {getAccountPromise} from '../constants'
+    import VueGtm from 'vue-gtm';
+
+    Vue.use(VueGtm, {
+        id: 'UA-135023229-1',
+        enabled: true
+    });
 
     const netlifyIdentity = require('netlify-identity-widget');
 

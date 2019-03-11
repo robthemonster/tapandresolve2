@@ -1,7 +1,7 @@
 <template>
     <b-row id="component" class="my-3 justify-content-center">
         <b-button-group size="lg" class="w-100">
-            <b-button  variant="warning" @click="$emit('draw_card_event')">
+            <b-button  variant="warning" @click="$emit('draw_card_event', true)">
                 <octicon name="sync"></octicon>
             </b-button>
 

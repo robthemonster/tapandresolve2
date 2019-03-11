@@ -3,7 +3,8 @@
         <span @click="launchModal">
         <DrawCardImage :image_uri="card.image_uris.border_crop"></DrawCardImage>
         </span>
-        <DrawCardVoteBar :loggedIn="loggedIn" :downvotes="card.dislikedCount" :upvotes="card.likedCount"></DrawCardVoteBar>
+        <DrawCardVoteBar :loggedIn="loggedIn" :downvotes="card.dislikedCount"
+                         :upvotes="card.likedCount"></DrawCardVoteBar>
         <DrawCardButtonRow :loggedIn="loggedIn" :cardUserStatus="cardUserStatus"
                            v-on:draw_card_event="drawRandomCard" v-on:like_card_event="likeCard"
                            v-on:dislike_card_event="dislikeCard"></DrawCardButtonRow>
@@ -86,7 +87,7 @@
                     });
                 }
             },
-            drawRandomCard() {
+            drawRandomCard(sendEvent) {
                 let authenticated = {userid: "", token: ""};
                 let outerThis = this;
                 this.$parent.getAccount().then(function (account) {
@@ -102,7 +103,13 @@
                             outerThis.card = response.data;
                             outerThis.fetchUserCardStatus();
                         })
-                })
+                });
+                if (sendEvent) {
+                    this.$gtm.trackEvent({
+                        category: 'draw_page_interaction',
+                        action: 'card_drawn'
+                    });
+                }
             },
             handleFiltersChange(filter) {
                 const selectedColors = new Set(filter.colors_selected);
@@ -141,9 +148,13 @@
                     axios.post(API_URL + "/addCardToLiked", data, JSON_HEADER).then(function (response) {
                         outerThis.updateCard(response.data);
                         outerThis.fetchUserCardStatus();
-                    }).finally(function() {
+                    }).finally(function () {
                         setTimeout(outerThis.drawRandomCard, 1000);
                     });
+                });
+                this.$gtm.trackEvent({
+                    category: 'draw_page_interaction',
+                    action: 'card_liked'
                 });
             },
             dislikeCard() {
@@ -153,9 +164,13 @@
                     axios.post(API_URL + "/addCardToBlocked", data, JSON_HEADER).then(function (response) {
                         outerThis.updateCard(response.data);
                         outerThis.fetchUserCardStatus();
-                    }).finally(function() {
+                    }).finally(function () {
                         setTimeout(outerThis.drawRandomCard, 1000);
                     });
+                });
+                this.$gtm.trackEvent({
+                    category: 'draw_page_interaction',
+                    action: 'card_disliked'
                 });
             }
         },
