@@ -38,7 +38,7 @@
             Footer
         },
         data: function () {
-            return {loggedIn: loggedIn, selfRef: 'draw.html'};
+            return {loggedIn: loggedIn, selfRef: './'};
         },
         methods: {
             getAccount() {

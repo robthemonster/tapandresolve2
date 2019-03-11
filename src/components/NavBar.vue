@@ -86,7 +86,7 @@
         },
         data() {
             return {
-                draw_page_ref: 'draw.html',
+                draw_page_ref: './',
                 liked_page_ref: 'liked.html',
                 disliked_page_ref:'disliked.html',
                 search_page_ref:"search.html",

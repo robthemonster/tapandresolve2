@@ -33,7 +33,7 @@
                 </p>
                 <hr>
                 <b-row class="justify-content-center mt-5">
-                    <b-button size="lg" href="draw.html" class="w-100">Get Started</b-button>
+                    <b-button size="lg" href="./" class="w-100">Get Started</b-button>
                 </b-row>
             </b-jumbotron>
         </b-container>
