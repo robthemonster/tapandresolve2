@@ -78,6 +78,7 @@
             this.$root.$on('bv::modal::show', function (bvEvent, modalId) {
                 if (modalId === "card_modal") {
                     outerThis.$gtm.trackEvent({
+                        event:"card_modal_event",
                         category: 'modal_interaction',
                         action: 'modal_open',
                         label:"modal",
@@ -114,6 +115,7 @@
                 });
                 const event = liked ? "unliked" : "liked";
                 this.$gtm.trackEvent({
+                    event:"card_modal_event",
                     category: 'modal_interaction',
                     action: 'modal_' + event,
                     label:"modal",
@@ -133,6 +135,7 @@
                 });
                 const event = disliked ? "undisliked" : "disliked";
                 this.$gtm.trackEvent({
+                    event:"card_modal_event",
                     category: 'modal_interaction',
                     action: 'modal_' + event,
                     label:"modal",

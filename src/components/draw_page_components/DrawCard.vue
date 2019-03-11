@@ -106,6 +106,7 @@
                 });
                 if (sendEvent) {
                     this.$gtm.trackEvent({
+                        event:'draw_page_event',
                         category: 'draw_page_interaction',
                         action: 'card_drawn',
                         label:"draw_page",
@@ -155,6 +156,7 @@
                     });
                 });
                 this.$gtm.trackEvent({
+                    event:'draw_page_event',
                     category: 'draw_page_interaction',
                     action: 'card_liked',
                     label:"draw_page",
@@ -173,6 +175,7 @@
                     });
                 });
                 this.$gtm.trackEvent({
+                    event:'draw_page_event',
                     category: 'draw_page_interaction',
                     action: 'card_disliked',
                     label:"draw_page",
