@@ -14,7 +14,8 @@
     "netlify-identity-widget": "^1.5.2",
     "vue": "^2.6.8",
     "vue-cookies": "^1.5.12",
-    "vue-octicon": "^2.1.1"
+    "vue-octicon": "^2.1.1",
+    "vue-tweet-embed": "^2.2.1"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "^3.4.0",

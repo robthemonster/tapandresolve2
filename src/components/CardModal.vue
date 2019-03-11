@@ -1,11 +1,15 @@
 <template>
     <b-modal ref="modal_ref" id="card_modal" class="text-dark" size="lg" :title="card.name" centered scrollable>
         <DrawCardImage :image_uri="card.image_uris.border_crop"></DrawCardImage>
-        <DrawCardVoteBar :downvotes="card.dislikedCount" :upvotes="card.likedCount"></DrawCardVoteBar>
-        <p v-if="!card.card_faces">{{card.oracle_text}}</p>
+        <DrawCardVoteBar :loggedIn="loggedIn" :downvotes="card.dislikedCount" :upvotes="card.likedCount"></DrawCardVoteBar>
+        <div v-if="!card.card_faces">
+            <p>{{card.oracle_text}}</p>
+            <p><i>{{card.flavor_text}}</i></p>
+        </div>
         <div v-if="card.card_faces" v-for="face in card.card_faces">
             <h5>{{face.name}}</h5>
-            {{face.oracle_text}}
+            <p>{{face.oracle_text}}</p>
+            <p><i>{{face.flavor_text}}</i></p>
         </div>
         <div>
             <h5>Set</h5>

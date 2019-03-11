@@ -1,16 +1,19 @@
 <template>
     <div id="app">
         <NavBar v-on:logout="logout" v-on:login="login" :loggedIn="loggedIn" :selfRef="selfRef"></NavBar>
-        <LeaderboardsSortSelector v-on:fetch_leaderboards="fetch_leaderboards">
-        </LeaderboardsSortSelector>
-        <CardList :card_list="cards" v-on:card-list-open-modal="openCardForModal"></CardList>
+        <b-container>
+            <LeaderboardsSortSelector v-on:fetch_leaderboards="fetch_leaderboards">
+            </LeaderboardsSortSelector>
+            <CardList :card_list="cards" v-on:card-list-open-modal="openCardForModal"></CardList>
+        </b-container>
         <CardModal
-        :card="selectedCard"
-        :cardUserStatus="selectedCardUserStatus"
-        :loggedIn="loggedIn"
-        v-on:fetchCardStatusById="getUserCardStatus"
-        v-on:modal-closed-event="fetch_leaderboards(sortType)"
+                :card="selectedCard"
+                :cardUserStatus="selectedCardUserStatus"
+                :loggedIn="loggedIn"
+                v-on:fetchCardStatusById="getUserCardStatus"
+                v-on:modal-closed-event="fetch_leaderboards(sortType)"
         ></CardModal>
+        <Footer></Footer>
     </div>
 </template>
 
@@ -25,6 +28,7 @@
     import LeaderboardsSortSelector from "../components/leaderboards_page_components/LeaderboardsSortSelector.vue"
     import CardList from "../components/CardList.vue"
     import CardModal from "../components/CardModal.vue"
+    import Footer from "../components/Footer.vue"
     import {API_URL, EMPTY_CARD, JSON_HEADER} from "@/constants";
     import {getAccountPromise} from '../constants'
 
@@ -36,14 +40,15 @@
     const axios = require('axios');
     let cards = [];
     let loggedIn = false;
-    let selectedCardUserStatus = {liked:false, blocked:false};
+    let selectedCardUserStatus = {liked: false, blocked: false};
     export default {
         name: "app",
         components: {
             NavBar,
             LeaderboardsSortSelector,
             CardList,
-            CardModal
+            CardModal,
+            Footer
         },
         data: function () {
             return {
@@ -73,7 +78,7 @@
                                 console.log(response);
                                 outerThis.selectedCardUserStatus = response.data;
                             }
-                        }).catch((err)=>console.log(err));
+                        }).catch((err) => console.log(err));
                 })
             },
             fetch_leaderboards(sort_type) {

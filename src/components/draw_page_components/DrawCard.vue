@@ -1,9 +1,9 @@
 <template>
-    <b-container id="DrawCard">
+    <b-container id="DrawCard" class="bg-dark text-white">
         <span @click="launchModal">
         <DrawCardImage :image_uri="card.image_uris.border_crop"></DrawCardImage>
         </span>
-        <DrawCardVoteBar :downvotes="card.dislikedCount" :upvotes="card.likedCount"></DrawCardVoteBar>
+        <DrawCardVoteBar :loggedIn="loggedIn" :downvotes="card.dislikedCount" :upvotes="card.likedCount"></DrawCardVoteBar>
         <DrawCardButtonRow :loggedIn="loggedIn" :cardUserStatus="cardUserStatus"
                            v-on:draw_card_event="drawRandomCard" v-on:like_card_event="likeCard"
                            v-on:dislike_card_event="dislikeCard"></DrawCardButtonRow>

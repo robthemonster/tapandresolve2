@@ -1,29 +1,30 @@
 <template>
-    <b-list-group style="overflow-y:hidden;">
-        <b-list-group-item v-for="(card,index) in card_list" @click="$emit('card-list-open-modal', card)">
-            <b-row class="card_item">
-                <b-col cols="7" class="text-center h-100">
-                    <b-row class="card_item_text" align-v="center">
-                        <b-col cols="2">
-                            <span>{{index+1}})</span>
-                        </b-col>
-                        <b-col cols="10">
-                            <b-row class="justify-content-center">
-                                <span>{{card.name}}</span>
-                            </b-row>
-                            <b-row class="justify-content-center">
-                                <DrawCardVoteBar class="w-100" :upvotes="card.likedCount"
-                                                 :downvotes="card.dislikedCount"></DrawCardVoteBar>
-                            </b-row>
-                        </b-col>
-                    </b-row>
-                </b-col>
-                <b-col cols="5" class="text-center">
+    <b-list-group  id="card_list" class="bg-dark">
+        <b-list-group-item style="overflow-y:hidden;" v-for="(card,index) in card_list" class="bg-dark text-light"
+                           @click="$emit('card-list-open-modal', card)">
+                <b-row class="card_item">
+                    <b-col cols="7" class="text-center h-100">
+                        <b-row class="card_item_text" align-v="center">
+                            <b-col cols="2">
+                                <span>{{index+1}})</span>
+                            </b-col>
+                            <b-col cols="10">
+                                <b-row class="justify-content-center">
+                                    <span>{{card.name}}</span>
+                                </b-row>
+                                <b-row class="justify-content-center">
+                                    <DrawCardVoteBar class="w-100" :upvotes="card.likedCount"
+                                                     :downvotes="card.dislikedCount"></DrawCardVoteBar>
+                                </b-row>
+                            </b-col>
+                        </b-row>
+                    </b-col>
+                    <b-col cols="5" class="text-center">
                     <span class="item_image">
                     <b-img fluid :src="card.image_uris.border_crop"></b-img>
                     </span>
-                </b-col>
-            </b-row>
+                    </b-col>
+                </b-row>
         </b-list-group-item>
     </b-list-group>
 </template>
@@ -48,7 +49,7 @@
         height: 8vh;
     }
 
-    .card_item_text {
-        font-size: 4vmin;
+    #card_list{
+        min-height:30vh;
     }
 </style>

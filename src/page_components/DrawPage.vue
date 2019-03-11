@@ -2,6 +2,7 @@
     <div id="app" class="text-white bg-dark">
         <NavBar v-on:logout="logout" v-on:login="login" :selfRef="selfRef" :loggedIn="loggedIn"></NavBar>
         <DrawCard :loggedIn="loggedIn"></DrawCard>
+        <Footer></Footer>
     </div>
 </template>
 
@@ -15,6 +16,7 @@
     import VueCookies from 'vue-cookies'
     import DrawCard from '../components/draw_page_components/DrawCard.vue'
     import NavBar from "../components/NavBar.vue"
+    import Footer from "../components/Footer.vue"
     import {getAccountPromise} from '../constants'
 
     const netlifyIdentity = require('netlify-identity-widget');
@@ -26,7 +28,8 @@
         name: 'app',
         components: {
             DrawCard,
-            NavBar
+            NavBar,
+            Footer
         },
         data: function () {
             return {loggedIn: loggedIn, selfRef: 'draw.html'};
@@ -68,6 +71,5 @@
         -webkit-font-smoothing: antialiased;
         -moz-osx-font-smoothing: grayscale;
         color: #2c3e50;
-        min-height: 100vh;
     }
 </style>

@@ -1,16 +1,19 @@
 <template>
     <div id="app">
         <NavBar v-on:logout="logout" v-on:login="login" :loggedIn="loggedIn" :selfRef="selfRef"></NavBar>
-        <CardList v-on:card-list-open-modal="openCardForModal" :card_list="cards"></CardList>
+        <b-container>
+            <CardList v-on:card-list-open-modal="openCardForModal" :card_list="cards"></CardList>
+        </b-container>
         <CardModal
-            :card="selectedCard"
-            :cardUserStatus="selectedCardUserStatus"
-            :loggedIn="loggedIn"
-            v-on:fetchCardStatusById="getUserCardStatus"
-            v-on:modal-closed-event="fetchDislikedCards"
+                :card="selectedCard"
+                :cardUserStatus="selectedCardUserStatus"
+                :loggedIn="loggedIn"
+                v-on:fetchCardStatusById="getUserCardStatus"
+                v-on:modal-closed-event="fetchDislikedCards"
         >
 
         </CardModal>
+        <Footer></Footer>
     </div>
 </template>
 
@@ -24,6 +27,7 @@
     import NavBar from "../components/NavBar.vue"
     import CardList from "../components/CardList.vue"
     import CardModal from "../components/CardModal.vue"
+    import Footer from "../components/Footer.vue"
     import {API_URL, getAccountPromise} from '../constants'
     import {EMPTY_CARD, JSON_HEADER} from "@/constants";
 
@@ -40,7 +44,8 @@
         components: {
             NavBar,
             CardList,
-            CardModal
+            CardModal,
+            Footer
         },
         data: function () {
             return {
