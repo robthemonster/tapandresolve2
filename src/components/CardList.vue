@@ -13,7 +13,7 @@
                                     <span>{{card.name}}</span>
                                 </b-row>
                                 <b-row class="justify-content-center">
-                                    <DrawCardVoteBar class="w-100" :upvotes="card.likedCount"
+                                    <DrawCardVoteBar loggedIn="true" class="w-100" :upvotes="card.likedCount"
                                                      :downvotes="card.dislikedCount"></DrawCardVoteBar>
                                 </b-row>
                             </b-col>
