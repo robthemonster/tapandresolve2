@@ -55,7 +55,7 @@
     import VueGtm from 'vue-gtm';
 
     Vue.use(VueGtm, {
-        id: 'UA-135023229-1',
+        id: 'GTM-5NQN7PF',
         enabled: true
     });
 
