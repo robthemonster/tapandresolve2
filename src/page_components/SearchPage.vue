@@ -1,8 +1,16 @@
 <template>
     <div id="app">
         <NavBar v-on:logout="logout" v-on:login="login" :loggedIn="loggedIn" :selfRef="selfRef"></NavBar>
-        <b-form-input :state="searchString.length > 2" placeholder="Card name" size="lg" v-model="searchString"></b-form-input>
-        <CardList :card_list="cards"></CardList>
+        <b-form-input :state="searchString.length > 2" placeholder="Card name" size="lg"
+                      v-model="searchString"></b-form-input>
+        <CardList v-on:card-list-open-modal="openCardForModal" :card_list="cards"></CardList>
+        <CardModal
+                :card="selectedCard"
+                :cardUserStatus="selectedStatus"
+                :loggedIn="loggedIn"
+                v-on:fetchCardStatusById="getUserCardStatus"
+                v-on:modal-closed-event="fetchSearchResults"
+        ></CardModal>
     </div>
 </template>
 
@@ -15,7 +23,9 @@
     import 'bootstrap-vue/dist/bootstrap-vue.css'
     import NavBar from "../components/NavBar.vue"
     import CardList from "../components/CardList.vue"
-    import {API_URL,JSON_HEADER, getAccountPromise} from '../constants'
+    import CardModal from "../components/CardModal.vue"
+    import {API_URL, getAccountPromise, JSON_HEADER} from '../constants'
+    import {EMPTY_CARD} from "@/constants";
 
 
     const axios = require('axios');
@@ -30,12 +40,38 @@
         name: "app",
         components: {
             NavBar,
-            CardList
+            CardList,
+            CardModal
         },
         data: function () {
-            return {loggedIn: loggedIn, selfRef: 'search.html', cards: cards, searchString: ""};
+            return {
+                loggedIn: loggedIn,
+                selfRef: 'search.html',
+                cards: cards,
+                searchString: "",
+                selectedCard: EMPTY_CARD,
+                selectedStatus: {liked: false, blocked: false}
+            };
         },
         methods: {
+            openCardForModal(card) {
+                this.selectedCard = card;
+                this.getUserCardStatus(card.id);
+                this.$root.$emit('bv::show::modal', 'card_modal')
+            },
+            getUserCardStatus(card_id) {
+                console.log(card_id);
+                const outerThis = this;
+                this.getAccount().then(function (account) {
+                    let data = {uuid: card_id, userid: account.id, token: account.token};
+                    axios.post(API_URL + "/getUserCardStatus", data, JSON_HEADER)
+                        .then(function (response) {
+                            if (outerThis.selectedCard.id === card_id) {
+                                outerThis.selectedStatus = response.data;
+                            }
+                        });
+                })
+            },
             getAccount() {
                 return getAccountPromise(netlifyIdentity);
             },
@@ -47,10 +83,11 @@
             },
             fetchSearchResults() {
                 const outerThis = this;
-                const data = {searchString:this.searchString, pageNumber:0, pageSize:50};
+                const data = {searchString: this.searchString, pageNumber: 0, pageSize: 50};
                 axios.post(API_URL + "/searchForCard", data, JSON_HEADER).then(function (response) {
-                    console.log(response);
                     outerThis.cards = response.data.cards;
+                    outerThis.selectedCard = EMPTY_CARD;
+                    outerThis.selectedCardUserStatus = {liked: false, blocked: false};
                 });
             }
         },

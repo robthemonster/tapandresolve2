@@ -1,7 +1,16 @@
 <template>
     <div id="app">
         <NavBar v-on:logout="logout" v-on:login="login" :loggedIn="loggedIn" :selfRef="selfRef"></NavBar>
-        <CardList :card_list="cards"></CardList>
+        <CardList v-on:card-list-open-modal="openCardForModal" :card_list="cards"></CardList>
+        <CardModal
+            :card="selectedCard"
+            :cardUserStatus="selectedCardUserStatus"
+            :loggedIn="loggedIn"
+            v-on:fetchCardStatusById="getUserCardStatus"
+            v-on:modal-closed-event="fetchDislikedCards"
+        >
+
+        </CardModal>
     </div>
 </template>
 
@@ -14,8 +23,9 @@
     import 'bootstrap-vue/dist/bootstrap-vue.css'
     import NavBar from "../components/NavBar.vue"
     import CardList from "../components/CardList.vue"
+    import CardModal from "../components/CardModal.vue"
     import {API_URL, getAccountPromise} from '../constants'
-
+    import {EMPTY_CARD, JSON_HEADER} from "@/constants";
 
     const axios = require('axios');
 
@@ -29,12 +39,36 @@
         name: "app",
         components: {
             NavBar,
-            CardList
+            CardList,
+            CardModal
         },
         data: function () {
-            return {loggedIn: loggedIn, selfRef: 'disliked.html', cards: cards};
+            return {
+                loggedIn: loggedIn,
+                selfRef: 'disliked.html',
+                cards: cards,
+                selectedCardUserStatus: {liked: false, blocked: false},
+                selectedCard: EMPTY_CARD
+            };
         },
         methods: {
+            openCardForModal(card) {
+                this.selectedCard = card;
+                this.getUserCardStatus(card.id);
+                this.$root.$emit('bv::show::modal', 'card_modal')
+            },
+            getUserCardStatus(card_id) {
+                const outerThis = this;
+                this.getAccount().then(function (account) {
+                    let data = {uuid: card_id, userid: account.id, token: account.token};
+                    axios.post(API_URL + "/getUserCardStatus", data, JSON_HEADER)
+                        .then(function (response) {
+                            if (outerThis.selectedCard.id === card_id) {
+                                outerThis.selectedCardUserStatus = response.data;
+                            }
+                        });
+                })
+            },
             getAccount() {
                 return getAccountPromise(netlifyIdentity);
             },
@@ -44,12 +78,14 @@
             logout() {
                 netlifyIdentity.logout();
             },
-            fetchSearchResults() {
+            fetchDislikedCards() {
                 const outerThis = this;
                 this.getAccount().then(function (account) {
                     const data = {userid: account.id, token: account.token};
                     axios.post(API_URL + "/getBlocked", data).then(function (response) {
                         outerThis.cards = response.data;
+                        outerThis.selectedCard = EMPTY_CARD;
+                        outerThis.selectedCardUserStatus = {liked: false, blocked: false};
                     })
                 })
             }
@@ -67,11 +103,11 @@
                 this.loggedIn = false;
             });
             netlifyIdentity.init();
-            this.fetchSearchResults();
+            this.fetchDislikedCards();
         },
         watch: {
             'loggedIn': function () {
-                this.fetchSearchResults();
+                this.fetchDislikedCards();
             }
         }
     }

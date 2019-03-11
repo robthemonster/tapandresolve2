@@ -132,7 +132,6 @@
     }
 
     import {API_URL} from "../../constants"
-    console.log(API_URL);
     const axios = require('axios');
     const DEFAULT_FILTER = {
         colorExclusive:
@@ -173,7 +172,7 @@
         commanders_only: false,
         artist: "",
         inclusiveSetMode: false,
-        excludedSets: []
+        excludedSets: [],
     };
     let currentFilter = DEFAULT_FILTER;
     let artists = [];
@@ -220,6 +219,7 @@
         methods: {
             resetFilter: function () {
                 Object.assign(this.filter, this.defaultFilter);
+                this.set_input = "";
             },
             add_or_exclude_set() {
                 if (this.setNames.has(this.set_input)) {

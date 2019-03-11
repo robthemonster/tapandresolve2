@@ -1,6 +1,6 @@
 <template>
     <b-list-group style="overflow-y:hidden;">
-        <b-list-group-item v-for="(card,index) in card_list">
+        <b-list-group-item v-for="(card,index) in card_list" @click="$emit('card-list-open-modal', card)">
             <b-row class="card_item">
                 <b-col cols="7" class="text-center h-100">
                     <b-row class="card_item_text" align-v="center">

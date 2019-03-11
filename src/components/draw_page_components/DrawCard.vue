@@ -1,11 +1,21 @@
 <template>
     <b-container id="DrawCard">
-        <DrawCardImage v-b-modal.draw_card_modal :image_uri="card.image_uris.border_crop"></DrawCardImage>
+        <span @click="launchModal">
+        <DrawCardImage :image_uri="card.image_uris.border_crop"></DrawCardImage>
+        </span>
         <DrawCardVoteBar :downvotes="card.dislikedCount" :upvotes="card.likedCount"></DrawCardVoteBar>
         <DrawCardButtonRow :loggedIn="loggedIn" :cardUserStatus="cardUserStatus"
-                           v-on:draw_card_event="drawRandomCard"></DrawCardButtonRow>
+                           v-on:draw_card_event="drawRandomCard" v-on:like_card_event="likeCard"
+                           v-on:dislike_card_event="dislikeCard"></DrawCardButtonRow>
         <DrawFilters v-on:filterUpdate="handleFiltersChange"></DrawFilters>
-        <CardModal id="draw_card_modal" :card="card"></CardModal>
+        <CardModal
+                ref="card_modal_ref"
+                v-on:updateCardDetailsFromModal="updateCard"
+                v-on:fetchCardStatusById="fetchUserCardStatus"
+                :loggedIn="loggedIn"
+                :card="card"
+                :cardUserStatus="cardUserStatus"
+        ></CardModal>
     </b-container>
 </template>
 
@@ -59,26 +69,20 @@
         data: function () {
             return {
                 cardUserStatus: cardUserStatus,
-                card: card
+                card: card,
             }
         },
         methods: {
-            fetchUserCardStatus() {
+            fetchUserCardStatus(card) {
                 if (this.$props.loggedIn) {
-                    console.log('loggedIn');
                     let outerThis = this;
                     this.$parent.getAccount().then(function (account) {
                         let data = {uuid: outerThis.card.id, userid: account.id, token: account.token};
                         axios.post(API_URL + "/getUserCardStatus", data, JSON_HEADER)
                             .then(function (response) {
-                                console.log(response.data);
                                 outerThis.cardUserStatus = response.data;
-                            }).catch(function(error) {
-                                console.log(error);
+                            }).catch(function (error) {
                         })
-                    }).catch(function (error) {
-                        console.log("user error");
-                        console.log(error);
                     });
                 }
             },
@@ -87,15 +91,13 @@
                 let outerThis = this;
                 this.$parent.getAccount().then(function (account) {
                     authenticated = account;
-                }).catch(function (error) {
-                    console.log(error);
                 }).finally(function () {
                     let formdata = {
                         userid: authenticated.id,
                         token: authenticated.token,
                         filter: JSON.stringify(currentFilters)
                     };
-                    axios.post(API_URL + "/randomCard", formdata,JSON_HEADER)
+                    axios.post(API_URL + "/randomCard", formdata, JSON_HEADER)
                         .then(function (response) {
                             outerThis.card = response.data;
                             outerThis.fetchUserCardStatus();
@@ -122,6 +124,39 @@
                 currentFilters.commandersOnly = filter.commanders_only;
                 currentFilters.artist = filter.artist;
                 currentFilters.excludedSets = filter.excludedSets;
+            },
+            launchModal() {
+                this.$root.$emit('bv::show::modal', 'card_modal')
+            },
+            getAccount() {
+                return this.$parent.getAccount();
+            },
+            updateCard(card) {
+                this.card = card;
+            },
+            likeCard() {
+                const outerThis = this;
+                this.getAccount().then(function (account) {
+                    const data = {uuid: outerThis.card.id, userid: account.id, token: account.token};
+                    axios.post(API_URL + "/addCardToLiked", data, JSON_HEADER).then(function (response) {
+                        outerThis.updateCard(response.data);
+                        outerThis.fetchUserCardStatus();
+                    }).finally(function() {
+                        setTimeout(outerThis.drawRandomCard, 1000);
+                    });
+                });
+            },
+            dislikeCard() {
+                const outerThis = this;
+                this.getAccount().then(function (account) {
+                    const data = {uuid: outerThis.card.id, userid: account.id, token: account.token};
+                    axios.post(API_URL + "/addCardToBlocked", data, JSON_HEADER).then(function (response) {
+                        outerThis.updateCard(response.data);
+                        outerThis.fetchUserCardStatus();
+                    }).finally(function() {
+                        setTimeout(outerThis.drawRandomCard, 1000);
+                    });
+                });
             }
         },
         mounted() {

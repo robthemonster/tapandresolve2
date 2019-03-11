@@ -5,11 +5,11 @@
                 <octicon name="sync"></octicon>
             </b-button>
 
-            <b-button v-if="loggedIn" variant="outline-success" v-bind:pressed="cardUserStatus.liked">
+            <b-button @click="$emit('like_card_event')" v-if="loggedIn" variant="outline-success" v-bind:pressed="cardUserStatus.liked">
                 <octicon name="thumbsup"></octicon>
             </b-button>
 
-            <b-button v-if="loggedIn" variant="outline-danger" v-bind:pressed="cardUserStatus.blocked">
+            <b-button @click="$emit('dislike_card_event')" v-if="loggedIn" variant="outline-danger" v-bind:pressed="cardUserStatus.blocked">
                 <octicon name="thumbsdown"></octicon>
             </b-button>
         </b-button-group>
