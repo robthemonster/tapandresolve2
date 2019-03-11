@@ -22,7 +22,8 @@
 
     Vue.use(VueGtm, {
         id: 'GTM-5NQN7PF',
-        enabled: true
+        enabled: true,
+        debug: true
     });
 
     const netlifyIdentity = require('netlify-identity-widget');
