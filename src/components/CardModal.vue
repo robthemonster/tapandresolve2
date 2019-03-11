@@ -79,7 +79,9 @@
                 if (modalId === "card_modal") {
                     outerThis.$gtm.trackEvent({
                         category: 'modal_interaction',
-                        action: 'modal_open'
+                        action: 'modal_open',
+                        label:"modal",
+                        value:1
                     });
                 }
             })
@@ -113,7 +115,9 @@
                 const event = liked ? "unliked" : "liked";
                 this.$gtm.trackEvent({
                     category: 'modal_interaction',
-                    action: 'modal_' + event
+                    action: 'modal_' + event,
+                    label:"modal",
+                    value:1
                 });
             },
             toggleDislikedStatus(disliked) {
@@ -130,7 +134,9 @@
                 const event = disliked ? "undisliked" : "disliked";
                 this.$gtm.trackEvent({
                     category: 'modal_interaction',
-                    action: 'modal_' + event
+                    action: 'modal_' + event,
+                    label:"modal",
+                    value:1
                 });
             },
             closeModal() {
