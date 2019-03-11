@@ -30,11 +30,10 @@
     import Footer from "../components/Footer.vue"
     import {API_URL, getAccountPromise} from '../constants'
     import {EMPTY_CARD, JSON_HEADER} from "@/constants";
-    import VueGtm from 'vue-gtm';
+    import VueAnalytics from 'vue-analytics'
 
-    Vue.use(VueGtm, {
-        id: 'GTM-5NQN7PF',
-        enabled: true
+    Vue.use(VueAnalytics, {
+        id: 'UA-135023229-1'
     });
 
     const axios = require('axios');

@@ -105,13 +105,7 @@
                         })
                 });
                 if (sendEvent) {
-                    this.$gtm.trackEvent({
-                        event:'draw_page_event',
-                        category: 'draw_page_interaction',
-                        action: 'card_drawn',
-                        label:"draw_page",
-                        value:1
-                    });
+                    this.$ga.event('draw_page_interaction', 'card_drawn');
                 }
             },
             handleFiltersChange(filter) {
@@ -155,13 +149,7 @@
                         setTimeout(outerThis.drawRandomCard, 1000);
                     });
                 });
-                this.$gtm.trackEvent({
-                    event:'draw_page_event',
-                    category: 'draw_page_interaction',
-                    action: 'card_liked',
-                    label:"draw_page",
-                    value:1
-                });
+                this.$ga.event('draw_page_interaction', 'card_liked');
             },
             dislikeCard() {
                 const outerThis = this;
@@ -174,13 +162,7 @@
                         setTimeout(outerThis.drawRandomCard, 1000);
                     });
                 });
-                this.$gtm.trackEvent({
-                    event:'draw_page_event',
-                    category: 'draw_page_interaction',
-                    action: 'card_disliked',
-                    label:"draw_page",
-                    value:1
-                });
+                this.$ga.event('draw_page_interaction', 'card_disliked');
             }
         },
         mounted() {

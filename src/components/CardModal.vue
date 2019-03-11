@@ -77,13 +77,8 @@
             });
             this.$root.$on('bv::modal::show', function (bvEvent, modalId) {
                 if (modalId === "card_modal") {
-                    outerThis.$gtm.trackEvent({
-                        event:"card_modal_event",
-                        category: 'modal_interaction',
-                        action: 'modal_open',
-                        label:"modal",
-                        value:1
-                    });
+                    outerThis.$ga.event('modal_interaction', 'modal_open');
+
                 }
             })
         },
@@ -114,13 +109,7 @@
                         });
                 });
                 const event = liked ? "unliked" : "liked";
-                this.$gtm.trackEvent({
-                    event:"card_modal_event",
-                    category: 'modal_interaction',
-                    action: 'modal_' + event,
-                    label:"modal",
-                    value:1
-                });
+                this.$ga.event('draw_page_interaction', 'modal_' + event);
             },
             toggleDislikedStatus(disliked) {
                 const outerThis = this;
@@ -134,13 +123,7 @@
                         });
                 });
                 const event = disliked ? "undisliked" : "disliked";
-                this.$gtm.trackEvent({
-                    event:"card_modal_event",
-                    category: 'modal_interaction',
-                    action: 'modal_' + event,
-                    label:"modal",
-                    value:1
-                });
+                this.$ga.event('modal_interaction', 'modal_' + event);
             },
             closeModal() {
                 this.$refs.modal_ref.hide();
