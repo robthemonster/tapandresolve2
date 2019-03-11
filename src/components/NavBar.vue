@@ -1,7 +1,10 @@
 <template>
     <div>
         <b-navbar toggleable="lg" type="light" class="text-black" variant="light">
-            <b-navbar-brand :href="getOrDefault(selfRef, draw_page_ref)">Tap and Resolve</b-navbar-brand>
+            <b-navbar-brand :href="getOrDefault(selfRef, draw_page_ref)">
+                <img src="https://tapandresolve.com/favicon.ico" alt="">
+                Tap and Resolve
+            </b-navbar-brand>
             <b-navbar-toggle target="nav_collapse"/>
 
             <b-collapse is-nav id="nav_collapse">

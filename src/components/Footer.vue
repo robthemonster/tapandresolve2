@@ -29,6 +29,8 @@
 </script>
 
 <style scoped>
-
+.description{
+    font-size:5vmin;
+}
 
 </style>
