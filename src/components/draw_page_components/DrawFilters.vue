@@ -83,7 +83,7 @@
                 <b-form-input id="set_input" placeholder="Set name"
                               :state="set_name_exists"
                               v-model="set_input" list="set_list" class="my-2"></b-form-input>
-                <b-button @click="add_or_exclude_set()" variant="success" v-bind:class="add_exclude_button_class"
+                <b-button @click="add_or_exclude_set()" v-bind:class="add_exclude_button_class"
                           v-bind:variant="add_exclude_button_variant">{{filter.inclusiveSetMode ? "Include" :
                     "Exclude"}}
                     set
