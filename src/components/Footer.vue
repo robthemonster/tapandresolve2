@@ -6,9 +6,9 @@
             <p> View random Magic The Gathering cards</p>
             <p> Find Your Next Deck
             </p>
-            <b>Contact<br><a href="mailto:tapandresolve@gmail.com">tapandresolve@gmail.com</a><br> <a
-                    href="twitter.com/tapandresolve">@tapandresolve</a><br><a
-                    href="https://www.linkedin.com/in/robert-levin-6194a990/">Robert Joseph Levin</a>
+            <b>Contact<br><a target="_blank" href="mailto:tapandresolve@gmail.com">tapandresolve@gmail.com</a><br> <a
+                    target="_blank" href="twitter.com/tapandresolve">@tapandresolve</a><br><a
+                    target="_blank" href="https://www.linkedin.com/in/robert-joseph-levin-6194a990/">Robert Joseph Levin</a>
             </b>
         </div>
         <Timeline :widget-class="'timeline'" :id="'tapandresolve'" :sourceType="'profile'"
