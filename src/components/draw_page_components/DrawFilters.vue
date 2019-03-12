@@ -65,15 +65,15 @@
                                            v-model="filter.formats_selected"></b-form-checkbox-group>
                 </b-collapse>
             </b-form-group>
-            <b-form-checkbox v-model="filter.commanders_only">Draw commanders only</b-form-checkbox>
+            <b-form-checkbox v-model="filter.commanders_only" class="mb-3">Draw commanders only</b-form-checkbox>
             <label for="artist_input">Only draw cards by this artist</label>
             <b-form-input id="artist_input" placeholder="Artist" v-model="filter.artist" :state="artist_name_state"
-                          list="artist_list" class="my-2">
+                          list="artist_list" class="mb-3">
             </b-form-input>
             <datalist id="artist_list">
                 <option v-for="artist in artists">{{artist}}</option>
             </datalist>
-            <label for="set_input">
+            <label for="set_input" class="w-100 text-center">
                 <b-checkbox @change="change_inclusive_set_mode" button v-model="filter.inclusiveSetMode">
                     {{filter.inclusiveSetMode ? "Include" : "Exclude"}}
                 </b-checkbox>
@@ -83,6 +83,12 @@
                 <b-form-input id="set_input" placeholder="Set name"
                               :state="set_name_exists"
                               v-model="set_input" list="set_list" class="my-2"></b-form-input>
+                <b-button @click="add_or_exclude_set()" variant="success" v-bind:class="add_exclude_button_class"
+                          v-bind:variant="add_exclude_button_variant">{{filter.inclusiveSetMode ? "Include" :
+                    "Exclude"}}
+                    set
+                </b-button>
+                <b-button @click="reset_excluded_set_list" class="mx-2" variant="warning">Reset set filter</b-button>
                 <div>
                     {{filter.inclusiveSetMode ? "Including" : "Excluding"}} {{display_sets().length}} sets:
                     <b-badge
@@ -90,22 +96,16 @@
                     </b-badge>
                 </div>
 
-                <b-button @click="add_or_exclude_set()" variant="success" v-bind:class="add_exclude_button_class"
-                          v-bind:variant="add_exclude_button_variant">{{filter.inclusiveSetMode ? "Include" :
-                    "Exclude"}}
-                    set
-                </b-button>
-                <b-button @click="reset_excluded_set_list" class="mx-2" variant="warning">Reset set filter</b-button>
-
             </b-form>
 
             <datalist id="set_list">
                 <option v-for="set in this.sets" :key="set.code">{{set.name}}</option>
             </datalist>
-            <b-form>
-                <b-button class="w-100 my-3" @click="resetFilter()" variant="danger">Reset all filters</b-button>
-            </b-form>
+
         </b-collapse>
+        <b-form>
+            <b-button :pressed="JSON.stringify(filter) !== JSON.stringify(defaultFilter)" class="w-100 my-3" @click="resetFilter()" variant="outline-danger">Reset all filters</b-button>
+        </b-form>
     </div>
 </template>
 
