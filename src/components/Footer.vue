@@ -2,12 +2,13 @@
     <footer class="footer text-center bg-light text-dark">
         <div class="py-5">
             <p>
-                Apply filters, draw cards, get build inspiration<br>
-                View random Magic The Gathering cards<br>
-                Find Your Next Deck
+                Apply filters, draw cards, get build inspiration</p>
+            <p> View random Magic The Gathering cards</p>
+            <p> Find Your Next Deck
             </p>
-            <b>Contact<br>Email: <a href="mailto:tapandresolve@gmail.com">tapandresolve@gmail.com</a><br>Twitter: <a
-                    href="twitter.com/tapandresolve">@tapandresolve</a><br>LinkedIn: <a href="https://www.linkedin.com/in/robert-levin-6194a990/">Rob Levin</a>
+            <b>Contact<br><a href="mailto:tapandresolve@gmail.com">tapandresolve@gmail.com</a><br> <a
+                    href="twitter.com/tapandresolve">@tapandresolve</a><br><a
+                    href="https://www.linkedin.com/in/robert-levin-6194a990/">Robert Joseph Levin</a>
             </b>
         </div>
         <Timeline :widget-class="'timeline'" :id="'tapandresolve'" :sourceType="'profile'"
