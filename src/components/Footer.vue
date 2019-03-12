@@ -7,7 +7,7 @@
                 Find Your Next Deck
             </p>
             <b>Contact<br>Email: <a href="mailto:tapandresolve@gmail.com">tapandresolve@gmail.com</a><br>Twitter: <a
-                    href="twitter.com/tapandresolve">@tapandresolve</a>
+                    href="twitter.com/tapandresolve">@tapandresolve</a><br>LinkedIn: <a href="https://www.linkedin.com/in/robert-levin-6194a990/">Rob Levin</a>
             </b>
         </div>
         <Timeline :widget-class="'timeline'" :id="'tapandresolve'" :sourceType="'profile'"

@@ -28,12 +28,20 @@
                     </b-button>
                     . You can click on a card to get additional information about it.
                 </p>
-                <p>
-                    Your feedback and suggestions help me improve the site. Please feel free to reach out.
-                </p>
+
                 <hr>
-                <b-row class="justify-content-center mt-5">
+                <b-row class="justify-content-center my-5">
                     <b-button size="lg" href="./" class="w-100">Get Started</b-button>
+                </b-row>
+
+                    <p>
+                        Your feedback and suggestions help improve the site. Please feel free to reach out.
+                    </p>
+                    <p>
+                        Tap and Resolve is a self funded passion project. If ( and <b>only if</b> ) you are satisfied my work, you may donate to help mitigate web hosting and development costs.
+                    </p>
+                <b-row class="justify-content-center">
+                    <a class="dbox-donation-button" href="https://donorbox.org/tap-and-resolve" style="background:#007bff url(https://d1iczxrky3cnb2.cloudfront.net/red_logo.png) no-repeat 37px center; color: #fff;text-decoration: none;font-family: Verdana,sans-serif;display: inline-block;font-size: 16px;padding: 15px 38px 15px 75px; -webkit-border-radius: 2px; -moz-border-radius: 2px; border-radius: 2px; box-shadow: 0 1px 0 0 #1f5a89; text-shadow: 0 1px rgba(0, 0, 0, 0.3);" >Donate</a>
                 </b-row>
             </b-jumbotron>
         </b-container>
@@ -98,6 +106,10 @@
             });
             netlifyIdentity.init();
             document.title += " - About";
+            let donateScript = document.createElement('script');
+            donateScript.setAttribute('src', "https://donorbox.org/install-popup-button.js");
+            donateScript.setAttribute('paypalExpress', "false");
+            document.head.appendChild(donateScript);
         }
     }
 </script>
