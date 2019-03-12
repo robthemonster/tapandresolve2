@@ -2,7 +2,7 @@
     <div>
         <b-navbar toggleable="lg" type="light" class="text-black" variant="light">
             <b-navbar-brand :href="getOrDefault(selfRef, draw_page_ref)">
-                <img src="https://tapandresolve.com/favicon.ico" alt="">
+                <b-img fluid src="https://tapandresolve.com/assets/icon_64.png" style="max-height: 32px" alt=""></b-img>
                 Tap and Resolve
             </b-navbar-brand>
             <b-navbar-toggle target="nav_collapse"/>
