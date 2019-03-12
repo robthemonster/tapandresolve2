@@ -37,12 +37,12 @@
                     <p>
                         Your feedback and suggestions help improve the site. I also just like to hear from you. Please feel free to reach out.
                     </p>
-                    <!--<p>-->
-                        <!--Tap and Resolve is a self funded passion project. If (and <b>only if</b>) you are satisfied with my work, you may donate to help mitigate web hosting and development costs.-->
-                    <!--</p>-->
-                <!--<b-row class="justify-content-center">-->
-                    <!--<a href="https://donorbox.org/tap-and-resolve" class="dbox-donation-button"> <b-button  variant="primary">Donate</b-button></a>-->
-                <!--</b-row>-->
+                    <p>
+                        Tap and Resolve is a self funded passion project. If (and <b>only if</b>) you are satisfied with my work, you may donate to help mitigate web hosting and development costs.
+                    </p>
+                <b-row class="justify-content-center">
+                    <a href="https://donorbox.org/tap-and-resolve" class="dbox-donation-button"> <b-button  variant="primary">Donate</b-button></a>
+                </b-row>
             </b-jumbotron>
         </b-container>
         <Footer></Footer>
@@ -57,7 +57,6 @@
     import 'bootstrap/dist/css/bootstrap.css'
     import 'bootstrap-vue/dist/bootstrap-vue.css'
     import NavBar from "../components/NavBar.vue"
-    import CardList from "../components/CardList.vue"
     import Footer from "../components/Footer.vue"
     import {getAccountPromise} from '../constants'
     import VueAnalytics from 'vue-analytics'
@@ -75,7 +74,6 @@
         name: "app",
         components: {
             NavBar,
-            CardList,
             Footer
         },
         data: function () {
