@@ -1,8 +1,9 @@
 <template>
     <div>
         <b-row>
-            <b-button v-b-toggle.filters_collapse class="w-100 mb-3">
-                Filters <octicon name="settings"></octicon>
+            <b-button v-b-toggle.filters_collapse size="lg" class="w-100 mb-3">
+                Filters
+                <octicon name="settings"></octicon>
             </b-button>
         </b-row>
         <b-collapse id="filters_collapse">
@@ -103,16 +104,17 @@
             </datalist>
 
         </b-collapse>
-        <b-form>
-            <b-button :pressed="!filterIsDefault()" class="w-100 my-3"
+        <b-row>
+            <b-button :pressed="!filterIsDefault()" size="lg" class="w-100 my-3"
                       @click="resetFilter()" variant="outline-danger">Reset all filters
             </b-button>
-        </b-form>
+        </b-row>
     </div>
 </template>
 
 <script>
     const deep_equal = require('deep-equal');
+
     function removeFromList(list, value) {
         let newList = [];
         list.forEach(function (item) {
@@ -222,7 +224,7 @@
         },
         methods: {
             filterIsDefault() {
-              return deep_equal(this.filter, this.defaultFilter);
+                return deep_equal(this.filter, this.defaultFilter);
             },
             resetFilter: function () {
                 Object.assign(this.filter, this.defaultFilter);
