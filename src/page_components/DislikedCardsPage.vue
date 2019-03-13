@@ -62,6 +62,7 @@
         mounted() {
             this.fetchDislikedCards();
         },
+        props: ['loggedIn'],
         watch: {
             'loggedIn': function () {
                 this.fetchDislikedCards();
