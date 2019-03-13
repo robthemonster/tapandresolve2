@@ -20,7 +20,7 @@
             LeaderboardsSortSelector,
             CardList,
         },
-        properties: ['loggedIn', 'cardUserStatus'],
+        props: ['loggedIn', 'cardUserStatus'],
         data: function () {
             return {
                 sortType: "TOP",
