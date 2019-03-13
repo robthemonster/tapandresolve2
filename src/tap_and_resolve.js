@@ -16,6 +16,7 @@ const routes = [
     {path: "/about", component: AboutPage}
 ];
 const router = new VueRouter({
+    mode: 'history',
     routes
 });
 Vue.config.productionTip = false;
