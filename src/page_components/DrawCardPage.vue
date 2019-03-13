@@ -112,6 +112,10 @@
                 for (let format in this.currentFilters.formatFlags) {
                     this.currentFilters.formatFlags[format] = selectedFormats.has(format);
                 }
+                const selectedRarities = new Set(filter.rarities_selected);
+                for (let rarity in this.currentFilters.rarityExclusions) {
+                    this.currentFilters.rarityExclusions[rarity] = !selectedRarities.has(rarity);
+                }
                 this.currentFilters.commandersOnly = filter.commanders_only;
                 this.currentFilters.artist = filter.artist;
                 this.currentFilters.excludedSets = filter.excludedSets;

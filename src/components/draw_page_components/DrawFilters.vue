@@ -2,7 +2,7 @@
     <div>
         <b-row>
             <b-button v-b-toggle.filters_collapse class="w-100 mb-3">
-                <octicon name="settings"></octicon>
+                Filters <octicon name="settings"></octicon>
             </b-button>
         </b-row>
         <b-collapse id="filters_collapse">
