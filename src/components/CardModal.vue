@@ -1,6 +1,6 @@
 <template>
     <b-modal ref="modal_ref" id="card_modal"  size="lg" :title="card.name" centered scrollable>
-        <DrawCardImage :image_uri="card.image_uris.border_crop"></DrawCardImage>
+        <DrawCardImage :image_uri="card.image_uris.border_crop" :card_name="card.name"></DrawCardImage>
         <DrawCardVoteBar :loggedIn="loggedIn" :downvotes="card.dislikedCount"
                          :upvotes="card.likedCount"></DrawCardVoteBar>
         <div v-if="!card.card_faces">

@@ -20,19 +20,19 @@
             <b-form-checkbox-group class="w-100 mb-3 mt-1" id="color_buttons" buttons button-variant="outline-secondary"
                                    v-model="filter.colors_selected">
                 <b-form-checkbox value="B">
-                    <b-img fluid src="https://tapandresolve.com/assets/B.png"></b-img>
+                    <b-img fluid src="https://tapandresolve.com/assets/B.png" alt="black"></b-img>
                 </b-form-checkbox>
                 <b-form-checkbox value="U">
-                    <b-img fluid src="https://tapandresolve.com/assets/U.png"></b-img>
+                    <b-img fluid src="https://tapandresolve.com/assets/U.png" alt="blue"></b-img>
                 </b-form-checkbox>
                 <b-form-checkbox value="G">
-                    <b-img fluid src="https://tapandresolve.com/assets/G.png"></b-img>
+                    <b-img fluid src="https://tapandresolve.com/assets/G.png" alt="green"></b-img>
                 </b-form-checkbox>
                 <b-form-checkbox value="R">
-                    <b-img fluid src="https://tapandresolve.com/assets/R.png"></b-img>
+                    <b-img fluid src="https://tapandresolve.com/assets/R.png" alt="red"></b-img>
                 </b-form-checkbox>
                 <b-form-checkbox value="W">
-                    <b-img fluid src="https://tapandresolve.com/assets/W.png"></b-img>
+                    <b-img fluid src="https://tapandresolve.com/assets/W.png" alt="white"></b-img>
                 </b-form-checkbox>
             </b-form-checkbox-group>
             <label for="types_group">

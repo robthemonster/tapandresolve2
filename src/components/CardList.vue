@@ -21,7 +21,7 @@
                     </b-col>
                     <b-col cols="5" class="text-center">
                     <span class="item_image">
-                    <b-img-lazy fluid :src="card.image_uris.border_crop"></b-img-lazy>
+                    <b-img-lazy fluid :src="card.image_uris.border_crop" :alt="card.name"></b-img-lazy>
                     </span>
                     </b-col>
                 </b-row>
