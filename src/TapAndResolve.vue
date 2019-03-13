@@ -4,7 +4,7 @@
         <router-view :loggedIn="loggedIn" :card="card" :cardUserStatus="cardUserStatus" v-on:like_card="likeCard"
                      v-on:dislike_card="dislikeCard" v-on:update_card="updateCard"
                      v-on:update_user_card_status="getUserCardStatus" v-on:open_modal="openModalForCard"
-                     :modalOpen="modalOpen" class="bg-dark"></router-view>
+                     :modalOpen="modalOpen" class="bg-dark pt-3"></router-view>
         <CardModal
                 :card="card"
                 :cardUserStatus="cardUserStatus"

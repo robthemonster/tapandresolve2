@@ -1,5 +1,5 @@
 <template>
-    <b-row class="my-3">
+    <b-row >
         <b-col>
             <div class="text-center">
                 <b-img fluid v-bind:src="image_uri" :alt="card_name"></b-img>
