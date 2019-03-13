@@ -1,16 +1,18 @@
 <template>
-    <b-container id="DrawCard" class="bg-dark text-white">
+    <div>
+        <b-container id="DrawCard" class="text-white">
         <span @click="$emit('open_modal', card)">
         <DrawCardImage :image_uri="card.image_uris.border_crop" :card_name="card.name"></DrawCardImage>
         </span>
-        <DrawCardVoteBar :loggedIn="loggedIn" :downvotes="card.dislikedCount"
-                         :upvotes="card.likedCount"></DrawCardVoteBar>
-        <DrawCardButtonRow :loggedIn="loggedIn" :cardUserStatus="cardUserStatus"
-                           v-on:draw_card_event="drawRandomCard"
-                           v-on:like_card_event="like_if_not_liked"
-                           v-on:dislike_card_event="dislike_if_not_disliked"></DrawCardButtonRow>
-        <DrawFilters v-on:filterUpdate="handleFiltersChange"></DrawFilters>
-    </b-container>
+            <DrawCardVoteBar :loggedIn="loggedIn" :downvotes="card.dislikedCount"
+                             :upvotes="card.likedCount"></DrawCardVoteBar>
+            <DrawCardButtonRow :loggedIn="loggedIn" :cardUserStatus="cardUserStatus"
+                               v-on:draw_card_event="drawRandomCard"
+                               v-on:like_card_event="like_if_not_liked"
+                               v-on:dislike_card_event="dislike_if_not_disliked"></DrawCardButtonRow>
+            <DrawFilters v-on:filterUpdate="handleFiltersChange"></DrawFilters>
+        </b-container>
+    </div>
 </template>
 
 <script>
