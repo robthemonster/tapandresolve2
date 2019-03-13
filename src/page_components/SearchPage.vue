@@ -59,7 +59,7 @@
         data: function () {
             return {
                 loggedIn: loggedIn,
-                selfRef: 'search.html',
+                selfRef: 'search',
                 cards: cards,
                 searchString: "",
                 selectedCard: EMPTY_CARD,

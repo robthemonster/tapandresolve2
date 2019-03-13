@@ -59,7 +59,7 @@
             return {
                 loggedIn: loggedIn,
                 sortType: "TOP",
-                selfRef: 'leaderboards.html',
+                selfRef: 'leaderboards',
                 cards: cards,
                 selectedCard: EMPTY_CARD,
                 selectedCardUserStatus: selectedCardUserStatus

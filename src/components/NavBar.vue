@@ -87,11 +87,11 @@
         data() {
             return {
                 draw_page_ref: './',
-                liked_page_ref: 'liked.html',
-                disliked_page_ref:'disliked.html',
-                search_page_ref:"search.html",
-                leaderboards_page_ref: 'leaderboards.html',
-                about_page_ref:'about.html'
+                liked_page_ref: 'liked',
+                disliked_page_ref:'disliked',
+                search_page_ref:"search",
+                leaderboards_page_ref: 'leaderboards',
+                about_page_ref:'about'
             }
         }
     }

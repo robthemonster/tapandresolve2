@@ -59,7 +59,7 @@
         data: function () {
             return {
                 loggedIn: loggedIn,
-                selfRef: 'liked.html',
+                selfRef: 'liked',
                 cards: cards,
                 filteredCards: cards,
                 selectedCardUserStatus: {liked: false, blocked: false},

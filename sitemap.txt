@@ -1,4 +1,4 @@
 https://tapandresolve.com
-https://tapandresolve.com/about.html
-https://tapandresolve.com/top_cards.html
-https://tapandresolve.com/search.html
+https://tapandresolve.com/about
+https://tapandresolve.com/top_cards
+https://tapandresolve.com/search

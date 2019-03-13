@@ -80,7 +80,7 @@
             Footer
         },
         data: function () {
-            return {loggedIn: loggedIn, selfRef: 'about.html'};
+            return {loggedIn: loggedIn, selfRef: 'about'};
         },
         methods: {
             getAccount() {
