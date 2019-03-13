@@ -1,5 +1,5 @@
 # Redirect domain aliases to primary domain
 https://tapandresolve.tk/* https://tapandresolve.com/:splat 301!
 https://www.tapandresolve.tk/* https://tapandresolve.com/:splat 301!
-/html/* /
 /* /
+/html/* /
