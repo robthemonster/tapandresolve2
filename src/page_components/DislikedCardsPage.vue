@@ -1,8 +1,13 @@
 <template>
     <div id="app">
-        <NavBar v-on:logout="logout" v-on:login="login" :loggedIn="loggedIn" :selfRef="selfRef"></NavBar>
+        <NavBar :loggedIn="loggedIn" :selfRef="selfRef" v-on:login="login" v-on:logout="logout"></NavBar>
         <b-container>
-            <CardList v-on:card-list-open-modal="openCardForModal" :card_list="cards"></CardList>
+            <b-form-input :state="(filterString !== '' && filteredCards.length === 0) ? false : filterString !== '' ? true : null " @input="filterCards" placeholder="Card name" size="lg"
+                          v-model="filterString" list="filtered_card_list"></b-form-input>
+            <datalist id="filtered_card_list">
+                <option v-for="card in filteredCards">{{card.name}}</option>
+            </datalist>
+            <CardList :card_list="filteredCards" v-on:card-list-open-modal="openCardForModal"></CardList>
         </b-container>
         <CardModal
                 :card="selectedCard"
@@ -10,9 +15,7 @@
                 :loggedIn="loggedIn"
                 v-on:fetchCardStatusById="getUserCardStatus"
                 v-on:modal-closed-event="fetchDislikedCards"
-        >
-
-        </CardModal>
+        ></CardModal>
         <Footer></Footer>
     </div>
 </template>
@@ -36,6 +39,7 @@
         id: 'UA-135023229-1'
     });
 
+
     const axios = require('axios');
 
     const netlifyIdentity = require('netlify-identity-widget');
@@ -57,11 +61,24 @@
                 loggedIn: loggedIn,
                 selfRef: 'disliked.html',
                 cards: cards,
+                filteredCards: cards,
                 selectedCardUserStatus: {liked: false, blocked: false},
-                selectedCard: EMPTY_CARD
+                selectedCard: EMPTY_CARD,
+                filterString: ""
             };
         },
         methods: {
+            filterCards() {
+                let filteredCards = [];
+                const filterString = this.filterString.toLowerCase();
+                console.log(filterString);
+                this.cards.forEach(function (card) {
+                    if (card.name.toLowerCase().includes(filterString)) {
+                        filteredCards.push(card);
+                    }
+                });
+                this.filteredCards = filteredCards;
+            },
             openCardForModal(card) {
                 this.selectedCard = card;
                 this.getUserCardStatus(card.id);
@@ -92,12 +109,13 @@
                 const outerThis = this;
                 this.getAccount().then(function (account) {
                     const data = {userid: account.id, token: account.token};
-                    axios.post(API_URL + "/getBlocked", data).then(function (response) {
+                    axios.post(API_URL + "/getBlocked", data, JSON_HEADER).then(function (response) {
                         outerThis.cards = response.data;
+                        outerThis.filterCards();
                         outerThis.selectedCard = EMPTY_CARD;
                         outerThis.selectedCardUserStatus = {liked: false, blocked: false};
                     })
-                })
+                });
             }
         },
         mounted() {
@@ -115,7 +133,6 @@
             netlifyIdentity.init();
             this.fetchDislikedCards();
             document.title += " - Disliked";
-
         },
         watch: {
             'loggedIn': function () {
@@ -126,5 +143,11 @@
 </script>
 
 <style scoped>
-
+    #app {
+        font-family: 'Avenir', Helvetica, Arial, sans-serif;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+        color: #2c3e50;
+        min-height: 100vh;
+    }
 </style>

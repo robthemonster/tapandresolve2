@@ -33,15 +33,18 @@
                 <b-row class="justify-content-center my-5">
                     <b-button size="lg" href="./" class="w-100">Get Started</b-button>
                 </b-row>
-
-                    <p>
-                        Your feedback and suggestions help improve the site. I also just like to hear from you. Please feel free to reach out.
-                    </p>
-                    <p>
-                        Tap and Resolve is a self funded passion project. If (and <b>only if</b>) you are satisfied with my work, you may donate to help mitigate web hosting and development costs.
-                    </p>
+                <p>
+                    Your feedback and suggestions help improve the site. I also just like to hear from you. Please feel
+                    free to reach out.
+                </p>
+                <p>
+                    Tap and Resolve is a self funded passion project. If (and <b>only if</b>) you are satisfied with my
+                    work, you may donate to help mitigate web hosting and development costs.
+                </p>
                 <b-row class="justify-content-center">
-                    <a href="https://donorbox.org/tap-and-resolve" class="dbox-donation-button"> <b-button  variant="primary">Donate</b-button></a>
+                    <a href="https://donorbox.org/tap-and-resolve" class="dbox-donation-button">
+                        <b-button variant="primary">Donate</b-button>
+                    </a>
                 </b-row>
             </b-jumbotron>
         </b-container>

@@ -2,7 +2,12 @@
     <div id="app">
         <NavBar :loggedIn="loggedIn" :selfRef="selfRef" v-on:login="login" v-on:logout="logout"></NavBar>
         <b-container>
-            <CardList :card_list="cards" v-on:card-list-open-modal="openCardForModal"></CardList>
+            <b-form-input :state="(filterString !== '' && filteredCards.length === 0) ? false : filterString !== '' ? true : null " @input="filterCards" placeholder="Card name" size="lg"
+                          v-model="filterString" list="filtered_card_list"></b-form-input>
+            <datalist id="filtered_card_list">
+                <option v-for="card in filteredCards">{{card.name}}</option>
+            </datalist>
+            <CardList :card_list="filteredCards" v-on:card-list-open-modal="openCardForModal"></CardList>
         </b-container>
         <CardModal
                 :card="selectedCard"
@@ -56,11 +61,24 @@
                 loggedIn: loggedIn,
                 selfRef: 'liked.html',
                 cards: cards,
+                filteredCards: cards,
                 selectedCardUserStatus: {liked: false, blocked: false},
-                selectedCard: EMPTY_CARD
+                selectedCard: EMPTY_CARD,
+                filterString: ""
             };
         },
         methods: {
+            filterCards() {
+                let filteredCards = [];
+                const filterString = this.filterString.toLowerCase();
+                console.log(filterString);
+                this.cards.forEach(function (card) {
+                    if (card.name.toLowerCase().includes(filterString)) {
+                        filteredCards.push(card);
+                    }
+                });
+                this.filteredCards = filteredCards;
+            },
             openCardForModal(card) {
                 this.selectedCard = card;
                 this.getUserCardStatus(card.id);
@@ -93,6 +111,7 @@
                     const data = {userid: account.id, token: account.token};
                     axios.post(API_URL + "/getLiked", data, JSON_HEADER).then(function (response) {
                         outerThis.cards = response.data;
+                        outerThis.filterCards();
                         outerThis.selectedCard = EMPTY_CARD;
                         outerThis.selectedCardUserStatus = {liked: false, blocked: false};
                     })

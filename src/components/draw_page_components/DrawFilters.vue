@@ -36,7 +36,7 @@
                 </b-form-checkbox>
             </b-form-checkbox-group>
             <label for="types_group">
-                <b-button v-b-toggle.types_collapse>Allow these types of cards</b-button>
+                <b-button v-b-toggle.types_collapse>Allow these <b>types</b></b-button>
             </label>
             <b-form-group id="types_group" class="justify-content-start">
                 <b-collapse id="types_collapse">
@@ -47,7 +47,7 @@
                 </b-collapse>
             </b-form-group>
             <label for="rarities_group">
-                <b-button v-b-toggle.rarities_collapse>Allow these rarities</b-button>
+                <b-button v-b-toggle.rarities_collapse>Allow these <b>rarities</b></b-button>
             </label>
             <b-form-group id="rarities_group">
                 <b-collapse id="rarities_collapse">
@@ -57,7 +57,7 @@
                 </b-collapse>
             </b-form-group>
             <label for="formats_group">
-                <b-button v-b-toggle.formats_collapse>Drawn cards must be legal in these formats</b-button>
+                <b-button v-b-toggle.formats_collapse>Must be legal in these <b>formats</b></b-button>
             </label>
             <b-form-group id="formats_group">
                 <b-collapse id="formats_collapse">
@@ -104,7 +104,9 @@
 
         </b-collapse>
         <b-form>
-            <b-button :pressed="JSON.stringify(filter) !== JSON.stringify(defaultFilter)" class="w-100 my-3" @click="resetFilter()" variant="outline-danger">Reset all filters</b-button>
+            <b-button :pressed="JSON.stringify(filter) !== JSON.stringify(defaultFilter)" class="w-100 my-3"
+                      @click="resetFilter()" variant="outline-danger">Reset all filters
+            </b-button>
         </b-form>
     </div>
 </template>
@@ -132,6 +134,7 @@
     }
 
     import {API_URL} from "../../constants"
+
     const axios = require('axios');
     const DEFAULT_FILTER = {
         colorExclusive:
