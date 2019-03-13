@@ -91,6 +91,8 @@
                                 outerThis.cardUserStatus = response.data;
                             }
                         });
+                }).catch(function() {
+                    outerThis.cardUserStatus = {liked:false, blocked:false};
                 })
             },
             updateCard(card) {

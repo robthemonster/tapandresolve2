@@ -77,10 +77,12 @@
                 }
             },
             drawRandomCard(sendEvent) {
-                let authenticated = {userid: "", token: ""};
+                let authenticated;
                 let outerThis = this;
                 this.$parent.getAccount().then(function (account) {
                     authenticated = account;
+                }).catch(function () {
+                    authenticated = {userid: "", token: ""};
                 }).finally(function () {
                     let formdata = {
                         userid: authenticated.id,
