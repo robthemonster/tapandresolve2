@@ -104,7 +104,7 @@
 
         </b-collapse>
         <b-form>
-            <b-button :pressed="JSON.stringify(filter) !== JSON.stringify(defaultFilter)" class="w-100 my-3"
+            <b-button :pressed="!filterIsDefault()" class="w-100 my-3"
                       @click="resetFilter()" variant="outline-danger">Reset all filters
             </b-button>
         </b-form>
@@ -112,6 +112,7 @@
 </template>
 
 <script>
+    const deep_equal = require('deep-equal');
     function removeFromList(list, value) {
         let newList = [];
         list.forEach(function (item) {
@@ -201,7 +202,7 @@
             if (localStorage.filter) {
                 const localFilters = JSON.parse(localStorage.filter);
                 if (JSON.stringify(Object.keys(localFilters).sort()) === JSON.stringify(Object.keys(DEFAULT_FILTER).sort())) {
-                    this.filter = JSON.parse(localStorage.filter);
+                    this.filter = localFilters
                 }
             }
             let outerThis = this;
@@ -220,6 +221,9 @@
             });
         },
         methods: {
+            filterIsDefault() {
+              return deep_equal(this.filter, this.defaultFilter);
+            },
             resetFilter: function () {
                 Object.assign(this.filter, this.defaultFilter);
                 this.set_input = "";
@@ -268,7 +272,7 @@
         },
         watch: {
             'filter': {
-                handler(newVal, oldVal) {
+                handler() {
                     this.$emit('filterUpdate', this.filter);
                     localStorage.filter = JSON.stringify(this.filter);
                 },

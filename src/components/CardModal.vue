@@ -1,5 +1,5 @@
 <template>
-    <b-modal ref="modal_ref" id="card_modal" class="text-dark" size="lg" :title="card.name" centered scrollable>
+    <b-modal ref="modal_ref" id="card_modal"  size="lg" :title="card.name" centered scrollable>
         <DrawCardImage :image_uri="card.image_uris.border_crop"></DrawCardImage>
         <DrawCardVoteBar :loggedIn="loggedIn" :downvotes="card.dislikedCount"
                          :upvotes="card.likedCount"></DrawCardVoteBar>
@@ -36,14 +36,15 @@
         </div>
         <div slot="modal-footer" class="w-100">
             <b-button-group size="lg" class="w-100">
-                <b-button @click="toggleLikeStatus(cardUserStatus.liked)" v-if="loggedIn" variant="outline-success"
+                <b-button @click="$emit('like_card', cardUserStatus.liked)" v-if="loggedIn" variant="outline-success"
                           v-bind:pressed="cardUserStatus.liked">
                     <octicon name="thumbsup"></octicon>
                 </b-button>
                 <b-button @click="closeModal" variant="outline-dark">
                     <octicon name="chevron-down"></octicon>
                 </b-button>
-                <b-button @click="toggleDislikedStatus(cardUserStatus.blocked)" v-if="loggedIn" variant="outline-danger"
+                <b-button @click="$emit('dislike_card', cardUserStatus.blocked)" v-if="loggedIn"
+                          variant="outline-danger"
                           v-bind:pressed="cardUserStatus.blocked">
                     <octicon name="thumbsdown"></octicon>
                 </b-button>
@@ -55,7 +56,6 @@
 <script>
     import DrawCardImage from "./draw_page_components/DrawCardImage"
     import DrawCardVoteBar from "./draw_page_components/DrawCardVoteBar"
-    import {API_URL, JSON_HEADER} from "@/constants";
 
     const axios = require('axios');
     export default {
@@ -68,19 +68,7 @@
             }
         },
         mounted() {
-            const outerThis = this;
-            this.$emit('fetchCardStatusById', this.card.id);
-            this.$root.$on('bv::modal::hidden', function (bvEvent, modalId) {
-                if (modalId === 'card_modal') {
-                    outerThis.$emit('modal-closed-event');
-                }
-            });
-            this.$root.$on('bv::modal::show', function (bvEvent, modalId) {
-                if (modalId === "card_modal") {
-                    outerThis.$ga.event('modal_interaction', 'modal_open');
-
-                }
-            })
+            this.$emit('update_user_card_status', this.card.id);
         },
         components: {
             DrawCardImage,
@@ -97,34 +85,6 @@
             }
         },
         methods: {
-            toggleLikeStatus(liked) {
-                const outerThis = this;
-                const action = liked ? "/removeCardFromLiked" : "/addCardToLiked";
-                this.$parent.getAccount().then(function (account) {
-                    const data = {uuid: outerThis.$props.card.id, userid: account.id, token: account.token};
-                    axios.post(API_URL + action, data, JSON_HEADER)
-                        .then(function (response) {
-                            outerThis.$emit('updateCardDetailsFromModal', response.data);
-                            outerThis.$emit('fetchCardStatusById', response.data.id);
-                        });
-                });
-                const event = liked ? "unliked" : "liked";
-                this.$ga.event('draw_page_interaction', 'modal_' + event);
-            },
-            toggleDislikedStatus(disliked) {
-                const outerThis = this;
-                const action = disliked ? "/removeCardFromBlocked" : "/addCardToBlocked";
-                this.$parent.getAccount().then(function (account) {
-                    const data = {uuid: outerThis.$props.card.id, userid: account.id, token: account.token};
-                    axios.post(API_URL + action, data, JSON_HEADER)
-                        .then(function (response) {
-                            outerThis.$emit('updateCardDetailsFromModal', response.data);
-                            outerThis.$emit('fetchCardStatusById', response.data.id);
-                        });
-                });
-                const event = disliked ? "undisliked" : "disliked";
-                this.$ga.event('modal_interaction', 'modal_' + event);
-            },
             closeModal() {
                 this.$refs.modal_ref.hide();
             }
@@ -160,12 +120,10 @@
                 })
             },
             'card.id': function () {
-                this.$emit('fetchCardStatusById', this.card.id);
+                this.$emit('update_user_card_status', this.card.id);
             }
         }
     }
 </script>
-
 <style scoped>
-
 </style>
