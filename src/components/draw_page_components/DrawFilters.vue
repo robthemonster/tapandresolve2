@@ -9,7 +9,7 @@
             <label class="w-100 text-center" for="color_buttons">
                 <b-form>
                     Draw cards using
-                    <b-form-checkbox button v-model="filter.colorExclusive" name="color_exclusive">
+                    <b-form-checkbox switch v-model="filter.colorExclusive" name="color_exclusive">
                         <b>{{filter.colorExclusive ? "Exactly":"At most"}}</b>
                     </b-form-checkbox>
                     these
@@ -74,8 +74,8 @@
                 <option v-for="artist in artists">{{artist}}</option>
             </datalist>
             <label for="set_input" class="w-100 text-center">
-                <b-checkbox @change="change_inclusive_set_mode" button v-model="filter.inclusiveSetMode">
-                    {{filter.inclusiveSetMode ? "Include" : "Exclude"}}
+                <b-checkbox @change="change_inclusive_set_mode" switch v-model="filter.inclusiveSetMode">
+                    <b>{{filter.inclusiveSetMode ? "Include" : "Exclude"}}</b>
                 </b-checkbox>
                 these sets</label>
             <b-form>
