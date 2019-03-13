@@ -2,7 +2,7 @@
     <div id="app">
         <NavBar :loggedIn="loggedIn" :selfRef="selfRef" v-on:login="login" v-on:logout="logout"></NavBar>
         <b-container>
-            <b-form-input :state="(filterString !== '' && filteredCards.length === 0) ? false : filterString !== '' ? true : null " @input="filterCards" placeholder="Card name" size="lg"
+            <b-form-input :state="(filterString !== '' && filteredCards.length === 0) ? false : filterString !== '' ? true : null " @input="filterCards" placeholder="Search by name" size="lg"
                           v-model="filterString" list="filtered_card_list"></b-form-input>
             <datalist id="filtered_card_list">
                 <option v-for="card in filteredCards">{{card.name}}</option>
