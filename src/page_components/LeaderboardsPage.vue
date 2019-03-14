@@ -32,25 +32,13 @@
             open_modal(card) {
                 this.$emit('open_modal', card);
             },
-            getUserCardStatus(card_id) {
-                const outerThis = this;
-                this.getAccount().then(function (account) {
-                    let data = {uuid: card_id, userid: account.id, token: account.token};
-                    axios.post(API_URL + "/getUserCardStatus", data, JSON_HEADER)
-                        .then(function (response) {
-                            if (outerThis.selectedCard.id === card_id) {
-                                outerThis.selectedCardUserStatus = response.data;
-                            }
-                        });
-                })
-            },
             fetch_leaderboards(sort_type) {
                 this.sortType = sort_type;
                 let data = {sort: sort_type};
                 let outerThis = this;
                 axios.post(API_URL + "/getTopCards", data, JSON_HEADER).then(function (response) {
                     outerThis.cards = response.data;
-                })
+                });
             }
         }
     }
