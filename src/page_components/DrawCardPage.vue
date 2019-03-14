@@ -40,7 +40,23 @@
             "duel": false,
             "oldschool": false
         },
-        allowLands: true,
+        allowedTypes: {
+            'token': true,
+            'basic': true,
+            'land': true,
+            'creature': true,
+            'artifact': true,
+            'enchantment': true,
+            'planeswalker': true,
+            'instant': true,
+            'sorcery': true,
+            'misc':true
+        },
+        allowedCategories: {
+            'digital': true,
+            'promo': true,
+            'silly': true
+        },
         allowBasicLands: true,
         commandersOnly: false,
         excludedSets: [],
@@ -106,12 +122,15 @@
                 }
                 this.currentFilters.colorExclusive = filter.colorExclusive;
                 const selectedTypes = new Set(filter.types_selected);
-                this.currentFilters.allowLands = selectedTypes.has('lands');
-                this.currentFilters.allowBasicLands = selectedTypes.has('basics');
-                this.currentFilters.excludeTokens = !selectedTypes.has('tokens');
-                this.currentFilters.excludeDigital = !selectedTypes.has('digital');
-                this.currentFilters.excludePromos = !selectedTypes.has('promos');
-                this.currentFilters.excludeSilly = !selectedTypes.has('silly');
+
+                for (let type in this.currentFilters.allowedTypes) {
+                    this.currentFilters.allowedTypes[type] = selectedTypes.has(type);
+                }
+                const selectedCategories = new Set(filter.categories_selected);
+                for (let category in this.currentFilters.allowedCategories) {
+                    this.currentFilters.allowedCategories[category] = selectedCategories.has(category);
+                }
+
                 const selectedFormats = new Set(filter.formats_selected);
                 for (let format in this.currentFilters.formatFlags) {
                     this.currentFilters.formatFlags[format] = selectedFormats.has(format);

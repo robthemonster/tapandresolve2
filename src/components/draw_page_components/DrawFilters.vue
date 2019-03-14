@@ -47,6 +47,16 @@
                     </b-form-checkbox-group>
                 </b-collapse>
             </b-form-group>
+            <label for="categories_group">
+                <b-button v-b-toggle.categories_collapse>Allow these <b>categories</b></b-button>
+            </label>
+            <b-form-group id="categories_group" class="justify-content-start">
+                <b-collapse id="categories_collapse">
+                    <b-form-checkbox-group stacked name="categories_name"
+                                           :options="filter.categories_values"
+                                           v-model="filter.categories_selected"></b-form-checkbox-group>
+                </b-collapse>
+            </b-form-group>
             <label for="rarities_group">
                 <b-button v-b-toggle.rarities_collapse>Allow these <b>rarities</b></b-button>
             </label>
@@ -144,15 +154,24 @@
             false,
         colors_selected:
             ["B", "U", "G", "R", "W"],
-        types_selected: ['lands', 'basics', 'tokens', 'digital', 'promos', 'silly'],
+        types_selected: ['token', 'basic', 'land', 'creature', 'artifact', 'enchantment', 'planeswalker', 'instant', 'sorcery', 'misc'],
         types_values: [
-            {text: "Lands", value: 'lands'},
-            {text: 'Basics', value: 'basics'},
-            {text: 'Tokens', value: 'tokens'},
+            {text: 'Tokens', value: 'token'},
+            {text: 'Basics', value: 'basic'},
+            {text: "Lands", value: 'land'},
+            {text: "Creatures", value: 'creature'},
+            {text: "Artifact", value: 'artifact'},
+            {text: 'Enchantment', value: 'enchantment'},
+            {text: "Planeswalker", value: 'planeswalker'},
+            {text: "Instant", value: 'instant'},
+            {text: "Sorcery", value: "sorcery"},
+            {text: "Misc.", value: "misc"}
+        ],
+        categories_selected: ['digital', 'promo', 'silly'],
+        categories_values: [
             {text: 'Online-Only', value: 'digital'},
-            {text: 'Promos', value: 'promos'},
+            {text: 'Promos', value: 'promo'},
             {text: 'Jokes', value: 'silly'}
-
         ],
         formats_selected: [],
         formats_values: [
