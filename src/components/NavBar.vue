@@ -2,7 +2,7 @@
     <div>
         <b-navbar toggleable="lg" type="light" class="text-black" variant="light">
             <b-navbar-brand to="/">
-                <b-img fluid src="https://tapandresolve.com/assets/icon_64.png" alt="tapandresolve.com" style="max-height: 32px"></b-img>
+                <b-img fluid src="https://tapandresolve.com/assets/icon_128.png" alt="tapandresolve.com" style="max-height: 32px"></b-img>
                 Tap and Resolve
             </b-navbar-brand>
             <b-navbar-toggle target="nav_collapse"/>
