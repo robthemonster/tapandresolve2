@@ -30,7 +30,8 @@
     import CardModal from "./components/CardModal.vue"
     import VueAnalytics from 'vue-analytics'
     import {API_URL, JSON_HEADER} from "@/constants";
-
+    import {registerServiceWorker} from "./registerServiceWorker.js"
+    registerServiceWorker();
     const axios = require('axios');
 
     Vue.use(VueAnalytics, {
