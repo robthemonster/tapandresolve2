@@ -24,6 +24,7 @@
         data: function () {
             return {
                 sortType: "TOP",
+                commandersOnly: false,
                 selfRef: 'leaderboards',
                 cards: cards
             };
@@ -32,9 +33,11 @@
             open_modal(card) {
                 this.$emit('open_modal', card);
             },
-            fetch_leaderboards(sort_type) {
+            fetch_leaderboards(sort_type, commandersOnly) {
+                console.log(sort_type, " ", commandersOnly);
                 this.sortType = sort_type;
-                let data = {sort: sort_type};
+                this.commandersOnly = commandersOnly;
+                let data = {sort: sort_type, commandersOnly: commandersOnly};
                 let outerThis = this;
                 axios.post(API_URL + "/getTopCards", data, JSON_HEADER).then(function (response) {
                     outerThis.cards = response.data;

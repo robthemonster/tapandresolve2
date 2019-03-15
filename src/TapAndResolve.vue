@@ -43,7 +43,18 @@
     Vue.component('octicon', Octicon);
     let loggedIn = false;
     let cardUserStatus = {liked: false, blocked: false};
-    let card = {image_uris: {border_crop: ""}, likedCount: 0, dislikedCount: 0};
+    let card = {
+        image_uris: {border_crop: ""},
+        likedCount: 0,
+        dislikedCount: 0,
+        name: "",
+        oracle_text: "",
+        flavor_text: "",
+        set_name: "",
+        legalities:{},
+        purchase_uris:{},
+        uri:false,
+    };
     let modalOpen = false;
     export default {
         name: 'app',
@@ -91,8 +102,8 @@
                                 outerThis.cardUserStatus = response.data;
                             }
                         });
-                }).catch(function() {
-                    outerThis.cardUserStatus = {liked:false, blocked:false};
+                }).catch(function () {
+                    outerThis.cardUserStatus = {liked: false, blocked: false};
                 })
             },
             updateCard(card) {
@@ -153,7 +164,7 @@
 </script>
 
 <style>
-#app{
-    min-height: 100vh;
-}
+    #app {
+        min-height: 100vh;
+    }
 </style>
