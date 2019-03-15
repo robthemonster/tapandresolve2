@@ -17,6 +17,10 @@
             {{card.set_name}}
         </div>
         <div>
+            <h5>Formats</h5>
+            <span v-for="format in Object.keys(card.legalities)"><span v-if="card.legalities[format] === 'legal'" class="text-capitalize">{{format}} </span></span>
+        </div>
+        <div>
             <h5>Prices</h5>
             <div v-for="price in prices">
                 {{price}}
@@ -25,13 +29,13 @@
         <div>
             <h5>Purchase links</h5>
             <div v-for="link in purchaseLinks">
-                <b-link target="_blank" :href="link.ref">{{link.name}}</b-link>
+                <b-link class="text-capitalize font-weight-bold" target="_blank" :href="link.ref">{{link.name}}</b-link>
             </div>
         </div>
         <div>
             <h5>Resources</h5>
             <div v-for="link in related_uris">
-                <b-link target="_blank" :href="link.ref">{{link.name}}</b-link>
+                <b-link class="text-capitalize font-weight-bold" target="_blank" :href="link.ref">{{link.name}}</b-link>
             </div>
         </div>
         <div slot="modal-footer" class="w-100">
