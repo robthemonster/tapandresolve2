@@ -3,6 +3,7 @@
         <b-container id="DrawCard" class="text-white">
         <span @click="$emit('open_modal', card)">
         <DrawCardImage :image_uri="card.image_uris.border_crop" :card_name="card.name"></DrawCardImage>
+                        <div class="text-muted text-center">Tap card for prices and more</div>
         </span>
             <DrawCardVoteBar :loggedIn="loggedIn" :downvotes="card.dislikedCount"
                              :upvotes="card.likedCount"></DrawCardVoteBar>
@@ -50,7 +51,7 @@
             'planeswalker': true,
             'instant': true,
             'sorcery': true,
-            'misc':true
+            'misc': true
         },
         allowedCategories: {
             'digital': true,

@@ -1,10 +1,15 @@
 <template>
     <div>
         <b-row>
-            <b-button v-b-toggle.filters_collapse size="lg" class="w-100 mb-3">
-                Filters
-                <octicon name="settings"></octicon>
-            </b-button>
+            <b-button-group class="w-100">
+                <b-button v-b-toggle.filters_collapse size="lg">
+                    Filters
+                    <octicon name="settings"></octicon>
+                </b-button>
+                <b-button :pressed="!filterIsDefault()" size="lg" @click="resetFilter()" variant="outline-danger">Reset
+                    all filters
+                </b-button>
+            </b-button-group>
         </b-row>
         <b-collapse id="filters_collapse">
             <label class="w-100 text-center" for="color_buttons">
@@ -114,11 +119,6 @@
             </datalist>
 
         </b-collapse>
-        <b-row>
-            <b-button :pressed="!filterIsDefault()" size="lg" class="w-100 my-3"
-                      @click="resetFilter()" variant="outline-danger">Reset all filters
-            </b-button>
-        </b-row>
     </div>
 </template>
 

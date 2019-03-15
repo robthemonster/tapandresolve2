@@ -3,6 +3,7 @@
         <DrawCardImage :image_uri="card.image_uris.border_crop" :card_name="card.name"></DrawCardImage>
         <DrawCardVoteBar :loggedIn="loggedIn" :downvotes="card.dislikedCount"
                          :upvotes="card.likedCount"></DrawCardVoteBar>
+        <div><h5>{{card.type_line}}</h5></div>
         <div v-if="!card.card_faces">
             <p>{{card.oracle_text}}</p>
             <p><i>{{card.flavor_text}}</i></p>

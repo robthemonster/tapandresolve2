@@ -1,6 +1,6 @@
 <template>
     <div>
-        <b-row class="my-3">
+        <b-row>
             <b-col>
                 <b-progress>
                     <b-progress-bar :value="upvoteRatio" variant="success">{{upvotes}}</b-progress-bar>
@@ -8,15 +8,12 @@
                 </b-progress>
             </b-col>
         </b-row>
-        <b-row v-if="!loggedIn" class="justify-content-center">
-            <span class="text-muted">Login to vote</span>
-        </b-row>
     </div>
 </template>
 
 <script>
     export default {
-        props: ['upvotes', 'downvotes', 'loggedIn'],
+        props: ['upvotes', 'downvotes'],
         name: "DrawCardVoteBar",
         computed: {
             upvoteRatio: function () {
