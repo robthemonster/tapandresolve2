@@ -37,7 +37,7 @@
 /* eslint-disable indent, no-unused-vars, no-multiple-empty-lines, max-nested-callbacks, space-before-function-paren, quotes, comma-spacing */
 'use strict';
 
-var precacheConfig = [["README.md","08e0f4e1bfbe7cae6ab367d73e22f4e7"],["babel.config.js","2cb2f1eea8e6d1f60249331d9785ce32"],["package-lock.json","e3068ff1263be44740a759de7d8812a2"],["package.json","f30cd1e12872b8274c2559ef33d24170"],["search_header.html","d06c428de7bf5b74e3367a85d4c4475f"],["sw-config.js","c233d4a629ce4d214d2f98dae5948a44"],["vue.config.js","c0e5cacf50947af22de72bd4674ccee9"]];
+var precacheConfig = [["README.md","08e0f4e1bfbe7cae6ab367d73e22f4e7"],["babel.config.js","2cb2f1eea8e6d1f60249331d9785ce32"],["package-lock.json","e3068ff1263be44740a759de7d8812a2"],["package.json","f30cd1e12872b8274c2559ef33d24170"],["search_header.html","d06c428de7bf5b74e3367a85d4c4475f"],["sw-config.js","608ebd8ae00f8bf3ff8b98a1de4421f4"],["vue.config.js","c0e5cacf50947af22de72bd4674ccee9"]];
 var cacheName = 'sw-precache-v3-sw-precache-' + (self.registration ? self.registration.scope : '');
 
 
