@@ -104,7 +104,7 @@
                     "Exclude"}}
                     set
                 </b-button>
-                <b-button @click="reset_excluded_set_list" class="mx-2" variant="warning">Reset set filter</b-button>
+                <b-button @click="reset_excluded_set_list" :pressed="display_sets().length >0" class="mx-2" variant="outline-warning">Reset set filter</b-button>
                 <div>
                     {{filter.inclusiveSetMode ? "Including" : "Excluding"}} {{display_sets().length}} sets:
                     <b-badge
