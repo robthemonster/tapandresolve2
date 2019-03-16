@@ -35,19 +35,21 @@
     import Footer from "./components/Footer.vue"
     import CardModal from "./components/CardModal.vue"
     import VueAnalytics from 'vue-analytics'
+    import Toasted from 'vue-toasted'
     import {API_URL, DEFAULT_USER_CARD_STATUS, JSON_HEADER} from "@/constants";
     import {registerServiceWorker} from "./registerServiceWorker.js"
 
-    registerServiceWorker();
     const axios = require('axios');
 
     Vue.use(VueAnalytics, {
         id: 'UA-135023229-1'
     });
+    Vue.use(Toasted);
 
     const netlifyIdentity = require('netlify-identity-widget');
 
-    Vue.use(BootstrapVue, VueCookies);
+    Vue.use(BootstrapVue);
+    Vue.use(VueCookies);
     Vue.component('octicon', Octicon);
     let loggedIn = false;
     let card = {
@@ -74,6 +76,12 @@
             return {loggedIn: loggedIn, modalOpen: modalOpen, modalCard: card, drawCard: card};
         },
         methods: {
+            updateCallback() {
+                this.$toasted.show('An update is available. Please refresh', {
+                    position: "bottom-center",
+                    singleton: true
+                });
+            },
             getAccount() {
                 return new Promise(function (resolve, reject) {
                     if (netlifyIdentity.currentUser()) {
@@ -97,7 +105,7 @@
                 this.modalCard = card;
             },
             updateDrawCard(card) {
-              this.drawCard = card;
+                this.drawCard = card;
             },
             openModalForCard(card) {
                 this.modalCard = card;
@@ -140,6 +148,7 @@
             }
         },
         mounted() {
+            registerServiceWorker(this.updateCallback);
             const outerThis = this;
             netlifyIdentity.on('init', user => {
                 if (user) {

@@ -2,7 +2,7 @@
 
 import {register} from 'register-service-worker'
 
-export function registerServiceWorker() {
+export function registerServiceWorker(updateCallback) {
     if (process.env.NODE_ENV === 'production') {
         register(`${process.env.BASE_URL}service-worker.js`, {
             ready() {
@@ -22,6 +22,7 @@ export function registerServiceWorker() {
             },
             updated() {
                 console.log('New content is available; please refresh.')
+                updateCallback();
             },
             offline() {
                 console.log('No internet connection found. App is running in offline mode.')
