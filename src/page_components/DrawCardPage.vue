@@ -11,6 +11,7 @@
                                v-on:draw_card_event="drawRandomCard"
                                v-on:like_card_event="like_if_not_liked"
                                v-on:dislike_card_event="dislike_if_not_disliked"></DrawCardButtonRow>
+            <p class="text-center">Cards left after applying filters: {{filterSize}}</p>
             <DrawFilters v-on:filterUpdate="handleFiltersChange"></DrawFilters>
         </b-container>
     </div>
@@ -80,7 +81,8 @@
             return {
                 currentFilters: DEFAULT_FILTERS,
                 defaultFilters: DEFAULT_FILTERS,
-                userCardStatus: DEFAULT_USER_CARD_STATUS
+                userCardStatus: DEFAULT_USER_CARD_STATUS,
+                filterSize: 0
             }
         },
         methods: {
@@ -121,6 +123,7 @@
                     axios.post(API_URL + "/randomCard", formdata, JSON_HEADER)
                         .then(function (response) {
                             outerThis.setCard(response.data);
+                            outerThis.updateFilterSize();
                         });
                 });
                 if (sendEvent) {
@@ -154,6 +157,25 @@
                 this.currentFilters.commandersOnly = filter.commanders_only;
                 this.currentFilters.artist = filter.artist;
                 this.currentFilters.excludedSets = filter.excludedSets;
+
+                this.updateFilterSize();
+
+            },
+            updateFilterSize() {
+                const outerThis = this;
+                let authenticated = {userid: "", token: ""};
+                this.$parent.getAccount().then(account => {
+                    authenticated = account;
+                }).finally(() => {
+                    let data = {
+                        userid: authenticated.id,
+                        token: authenticated.token,
+                        filters: JSON.stringify(outerThis.currentFilters)
+                    };
+                    axios.post(API_URL+"/getFilterSize", data, JSON_HEADER).then(response => {
+                        outerThis.filterSize = response.data.numLeft;
+                    })
+                })
             },
             refreshUserCardStatus() {
                 this.setCard(this.$props.drawCard);
