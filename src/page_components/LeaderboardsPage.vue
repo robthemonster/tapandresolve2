@@ -20,7 +20,7 @@
             LeaderboardsSortSelector,
             CardList,
         },
-        props: ['loggedIn', 'cardUserStatus'],
+        props: ['loggedIn'],
         data: function () {
             return {
                 sortType: "TOP",
@@ -34,7 +34,6 @@
                 this.$emit('open_modal', card);
             },
             fetch_leaderboards(sort_type, commandersOnly) {
-                console.log(sort_type, " ", commandersOnly);
                 this.sortType = sort_type;
                 this.commandersOnly = commandersOnly;
                 let data = {sort: sort_type, commandersOnly: commandersOnly};
@@ -43,6 +42,12 @@
                     outerThis.cards = response.data;
                 });
             }
+        },
+        mounted() {
+            let outerThis = this;
+            this.$root.$on('bv::modal::hidden', () => {
+                outerThis.fetch_leaderboards(this.sortType, this.commandersOnly);
+            });
         }
     }
 </script>

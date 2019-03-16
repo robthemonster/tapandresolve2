@@ -6,7 +6,7 @@
                     @input="filterCards" placeholder="Search by name" size="lg"
                     v-model="filterString" list="filtered_card_list"></b-form-input>
             <datalist id="filtered_card_list">
-                <option v-for="card in filteredCards">{{card.name}}</option>
+                <option v-for="card in filteredCards" :key="card.id">{{card.name}}</option>
             </datalist>
             <CardList :card_list="filteredCards" v-on:open_modal="open_modal"></CardList>
         </b-container>
@@ -16,7 +16,7 @@
 <script>
     import CardList from "../components/CardList.vue"
     import {API_URL} from '../constants'
-    import {EMPTY_CARD, JSON_HEADER} from "@/constants";
+    import {JSON_HEADER} from "@/constants";
 
     const axios = require('axios');
 
@@ -46,26 +46,31 @@
                 });
                 this.filteredCards = filteredCards;
             },
-            fetchLikedCards() {
+            fetchCards() {
                 const outerThis = this;
                 this.$parent.getAccount().then(function (account) {
                     const data = {userid: account.id, token: account.token};
-                    axios.post(API_URL + "/getLiked", data, JSON_HEADER).then(function (response) {
+                    axios.post(API_URL + outerThis.apiPath, data, JSON_HEADER).then(function (response) {
                         outerThis.cards = response.data;
                         outerThis.filterCards();
-                        outerThis.selectedCard = EMPTY_CARD;
-                        outerThis.selectedCardUserStatus = {liked: false, blocked: false};
                     })
                 });
             }
         },
         mounted() {
-            this.fetchLikedCards();
+            this.fetchCards();
+            let outerThis = this;
+            this.$root.$on('bv::modal::hidden', () => {
+                outerThis.fetchCards()
+            });
         },
-        props: ['loggedIn'],
+        props: ['loggedIn', 'apiPath'],
         watch: {
             'loggedIn': function () {
-                this.fetchLikedCards();
+                this.fetchCards();
+            },
+            'apiPath': function () {
+                this.fetchCards();
             }
         }
     }

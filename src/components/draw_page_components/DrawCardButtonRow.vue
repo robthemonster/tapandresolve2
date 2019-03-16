@@ -5,11 +5,11 @@
                 Draw <octicon name="sync"></octicon>
             </b-button>
 
-            <b-button @click="$emit('like_card_event')" v-if="loggedIn" variant="outline-success" v-bind:pressed="cardUserStatus.liked">
+            <b-button @click="$emit('like_card_event')" v-if="loggedIn" variant="outline-success" v-bind:pressed="userCardStatus.liked">
                 Like <octicon name="thumbsup"></octicon>
             </b-button>
 
-            <b-button @click="$emit('dislike_card_event')" v-if="loggedIn" variant="outline-danger" v-bind:pressed="cardUserStatus.blocked">
+            <b-button @click="$emit('dislike_card_event')" v-if="loggedIn" variant="outline-danger" v-bind:pressed="userCardStatus.blocked">
                 Dislike <octicon name="thumbsdown"></octicon>
             </b-button>
         </b-button-group>
@@ -19,7 +19,7 @@
 <script>
     export default {
         name: "DrawCardButtonRow",
-        props: ['loggedIn', 'cardUserStatus']
+        props: ['loggedIn', 'userCardStatus']
     }
 </script>
 

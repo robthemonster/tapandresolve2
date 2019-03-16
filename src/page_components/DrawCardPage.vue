@@ -1,13 +1,13 @@
 <template>
     <div>
         <b-container id="DrawCard" class="text-white">
-        <span @click="$emit('open_modal', card)">
-        <DrawCardImage :image_uri="card.image_uris.border_crop" :card_name="card.name"></DrawCardImage>
-                        <div class="text-muted text-center">Tap card for prices and info</div>
+        <span @click="$emit('open_modal', drawCard)">
+        <DrawCardImage :image_uri="drawCard.image_uris.border_crop" :card_name="drawCard.name"></DrawCardImage>
+                        <p class="text-muted text-center">Tap card for prices and info</p>
         </span>
-            <DrawCardVoteBar :loggedIn="loggedIn" :downvotes="card.dislikedCount"
-                             :upvotes="card.likedCount"></DrawCardVoteBar>
-            <DrawCardButtonRow :loggedIn="loggedIn" :cardUserStatus="cardUserStatus"
+            <DrawCardVoteBar :loggedIn="loggedIn" :downvotes="drawCard.dislikedCount"
+                             :upvotes="drawCard.likedCount"></DrawCardVoteBar>
+            <DrawCardButtonRow :loggedIn="loggedIn" :userCardStatus="userCardStatus"
                                v-on:draw_card_event="drawRandomCard"
                                v-on:like_card_event="like_if_not_liked"
                                v-on:dislike_card_event="dislike_if_not_disliked"></DrawCardButtonRow>
@@ -22,6 +22,7 @@
     import DrawCardButtonRow from "../components/draw_page_components/DrawCardButtonRow"
     import DrawFilters from "../components/draw_page_components/DrawFilters"
     import {API_URL, JSON_HEADER} from '../constants'
+    import {DEFAULT_USER_CARD_STATUS} from "@/constants";
 
     const axios = require('axios');
 
@@ -74,21 +75,32 @@
         artist: ""
     };
     export default {
-        props: ['loggedIn', 'cardUserStatus', 'card', 'modalOpen'],
+        props: ['loggedIn', 'modalOpen', 'drawCard'],
         data() {
-            return {currentFilters: DEFAULT_FILTERS, defaultFilters: DEFAULT_FILTERS}
+            return {
+                currentFilters: DEFAULT_FILTERS,
+                defaultFilters: DEFAULT_FILTERS,
+                userCardStatus: DEFAULT_USER_CARD_STATUS
+            }
         },
         methods: {
+            setCard(card) {
+                this.$emit('update_card_from_draw_page', card);
+                this.$emit('update_user_card_status', card.id, this.setUserCardStatus);
+            },
+            setUserCardStatus(status) {
+                this.userCardStatus = status;
+            },
             like_if_not_liked() {
-                if (!this.$props.cardUserStatus.liked) {
-                    this.$emit('like_card');
+                if (!this.userCardStatus.liked) {
+                    this.$emit('like_card', this.$props.drawCard.id, false, this.setCard);
                 } else {
                     this.drawRandomCard();
                 }
             },
             dislike_if_not_disliked() {
-                if (!this.$props.cardUserStatus.blocked) {
-                    this.$emit('dislike_card');
+                if (!this.userCardStatus.blocked) {
+                    this.$emit('dislike_card', this.$props.drawCard.id, false, this.setCard);
                 } else {
                     this.drawRandomCard();
                 }
@@ -108,8 +120,7 @@
                     };
                     axios.post(API_URL + "/randomCard", formdata, JSON_HEADER)
                         .then(function (response) {
-                            outerThis.$emit("update_card", response.data);
-                            outerThis.$emit('update_user_card_status', response.data.id);
+                            outerThis.setCard(response.data);
                         });
                 });
                 if (sendEvent) {
@@ -143,20 +154,27 @@
                 this.currentFilters.commandersOnly = filter.commanders_only;
                 this.currentFilters.artist = filter.artist;
                 this.currentFilters.excludedSets = filter.excludedSets;
+            },
+            refreshUserCardStatus() {
+                this.setCard(this.$props.drawCard);
             }
         },
         mounted() {
-            if (!this.$props.card.id) {
+            if (!this.$props.drawCard.id) {
                 this.drawRandomCard();
             }
+            let outerThis = this;
+            this.$root.$on('bv::modal::hidden', () => {
+                outerThis.refreshUserCardStatus()
+            })
         },
         watch: {
             loggedIn: function (val) {
                 if (val) {
-                    this.$emit('update_user_card_status', this.card.id);
+                    this.$emit('update_user_card_status', this.$props.drawCard.id, this.setUserCardStatus);
                 }
             },
-            'cardUserStatus': function (newVal) {
+            'userCardStatus': function (newVal) {
                 if (!this.$props.modalOpen && (newVal.liked || newVal.blocked)) {
                     setTimeout(this.drawRandomCard, 500);
                 }

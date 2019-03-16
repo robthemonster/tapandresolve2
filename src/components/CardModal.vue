@@ -1,5 +1,5 @@
 <template>
-    <b-modal ref="modal_ref" id="card_modal"  size="lg" :title="card.name" centered scrollable>
+    <b-modal ref="modal_ref" id="card_modal" size="lg" :title="card.name" centered scrollable>
         <DrawCardImage :image_uri="card.image_uris.border_crop" :card_name="card.name"></DrawCardImage>
         <DrawCardVoteBar :loggedIn="loggedIn" :downvotes="card.dislikedCount"
                          :upvotes="card.likedCount"></DrawCardVoteBar>
@@ -8,10 +8,12 @@
             <p>{{card.oracle_text}}</p>
             <p><i>{{card.flavor_text}}</i></p>
         </div>
-        <div v-if="card.card_faces" v-for="face in card.card_faces">
-            <h5>{{face.name}}</h5>
-            <p>{{face.oracle_text}}</p>
-            <p><i>{{face.flavor_text}}</i></p>
+        <div v-if="card.card_faces">
+            <div v-for="face in card.card_faces" :key="face.name">
+                <h5>{{face.name}}</h5>
+                <p>{{face.oracle_text}}</p>
+                <p><i>{{face.flavor_text}}</i></p>
+            </div>
         </div>
         <div>
             <h5>Set</h5>
@@ -19,38 +21,42 @@
         </div>
         <div>
             <h5>Formats</h5>
-            <span v-for="format in Object.keys(card.legalities)"><span v-if="card.legalities[format] === 'legal'" class="text-capitalize">{{format}} </span></span>
+            <span v-for="format in Object.keys(card.legalities)" :key="format"><span
+                    v-if="card.legalities[format] === 'legal'"
+                    class="text-capitalize">{{format}} </span></span>
         </div>
         <div>
             <h5>Prices</h5>
-            <div v-for="price in prices">
+            <div v-for="price in prices" :key="price">
                 {{price}}
             </div>
         </div>
         <div>
             <h5>Purchase links</h5>
-            <div v-for="link in purchaseLinks">
+            <div v-for="link in purchaseLinks" :key="link.name">
                 <b-link class="text-capitalize font-weight-bold" target="_blank" :href="link.ref">{{link.name}}</b-link>
             </div>
         </div>
         <div>
             <h5>Resources</h5>
-            <div v-for="link in related_uris">
+            <div v-for="link in related_uris" :key="link.name">
                 <b-link class="text-capitalize font-weight-bold" target="_blank" :href="link.ref">{{link.name}}</b-link>
             </div>
         </div>
         <div slot="modal-footer" class="w-100">
             <b-button-group size="lg" class="w-100">
-                <b-button @click="$emit('like_card', cardUserStatus.liked)" v-if="loggedIn" variant="outline-success"
-                          v-bind:pressed="cardUserStatus.liked">
+                <b-button @click="$emit('like_card', card.id, userCardStatus.liked, updateCardFromModal)"
+                          v-if="loggedIn" variant="outline-success"
+                          v-bind:pressed="userCardStatus.liked">
                     <octicon name="thumbsup"></octicon>
                 </b-button>
                 <b-button @click="closeModal" variant="outline-dark">
                     <octicon name="chevron-down"></octicon>
                 </b-button>
-                <b-button @click="$emit('dislike_card', cardUserStatus.blocked)" v-if="loggedIn"
+                <b-button @click="$emit('dislike_card', card.id, userCardStatus.blocked, updateCardFromModal)"
+                          v-if="loggedIn"
                           variant="outline-danger"
-                          v-bind:pressed="cardUserStatus.blocked">
+                          v-bind:pressed="userCardStatus.blocked">
                     <octicon name="thumbsdown"></octicon>
                 </b-button>
             </b-button-group>
@@ -61,19 +67,21 @@
 <script>
     import DrawCardImage from "./draw_page_components/DrawCardImage"
     import DrawCardVoteBar from "./draw_page_components/DrawCardVoteBar"
+    import {DEFAULT_USER_CARD_STATUS} from "@/constants";
 
     const axios = require('axios');
     export default {
         name: "CardModal",
-        props: ['card', 'loggedIn', 'cardUserStatus'],
+        props: ['loggedIn', 'card'],
         data() {
             return {
                 prices: [],
-                purchaseLinks: []
+                purchaseLinks: [],
+                userCardStatus: DEFAULT_USER_CARD_STATUS
             }
         },
         mounted() {
-            this.$emit('update_user_card_status', this.card.id);
+            this.$emit('update_user_card_status', this.$props.card.id, this.setUserCardStatus);
         },
         components: {
             DrawCardImage,
@@ -92,6 +100,12 @@
         methods: {
             closeModal() {
                 this.$refs.modal_ref.hide();
+            },
+            setUserCardStatus(status) {
+                this.userCardStatus = status;
+            },
+            updateCardFromModal(card) {
+                this.$emit('update_card_from_modal', card);
             }
         },
         watch: {
@@ -124,8 +138,10 @@
                     }
                 })
             },
-            'card.id': function () {
-                this.$emit('update_user_card_status', this.card.id);
+            'card': {
+                handler() {
+                    this.$emit('update_user_card_status', this.card.id, this.setUserCardStatus);
+                }, deep: true
             }
         }
     }

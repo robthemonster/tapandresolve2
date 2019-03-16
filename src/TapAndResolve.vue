@@ -1,17 +1,23 @@
 <template>
     <div id="app">
         <NavBar v-on:logout="logout" v-on:login="login" :loggedIn="loggedIn"></NavBar>
-        <router-view :loggedIn="loggedIn" :card="card" :cardUserStatus="cardUserStatus" v-on:like_card="likeCard"
-                     v-on:dislike_card="dislikeCard" v-on:update_card="updateCard"
-                     v-on:update_user_card_status="getUserCardStatus" v-on:open_modal="openModalForCard"
-                     :modalOpen="modalOpen" class="bg-dark py-3"></router-view>
+        <router-view :loggedIn="loggedIn"
+                     v-on:like_card="likeCard"
+                     v-on:dislike_card="dislikeCard"
+                     v-on:update_user_card_status="getUserCardStatus"
+                     v-on:update_card_from_modal="updateCardFromModal"
+                     v-on:open_modal="openModalForCard"
+                     :modalOpen="modalOpen"
+                     :drawCard="drawCard"
+                     v-on:update_card_from_draw_page="updateDrawCard"
+                     class="bg-dark py-3"></router-view>
         <CardModal
-                :card="card"
-                :cardUserStatus="cardUserStatus"
+                :card="modalCard"
                 :loggedIn="loggedIn"
                 v-on:like_card="likeCard"
                 v-on:dislike_card="dislikeCard"
                 v-on:update_user_card_status="getUserCardStatus"
+                v-on:update_card_from_modal="updateCardFromModal"
         ></CardModal>
         <Footer></Footer>
     </div>
@@ -29,8 +35,9 @@
     import Footer from "./components/Footer.vue"
     import CardModal from "./components/CardModal.vue"
     import VueAnalytics from 'vue-analytics'
-    import {API_URL, JSON_HEADER} from "@/constants";
+    import {API_URL, DEFAULT_USER_CARD_STATUS, JSON_HEADER} from "@/constants";
     import {registerServiceWorker} from "./registerServiceWorker.js"
+
     registerServiceWorker();
     const axios = require('axios');
 
@@ -43,7 +50,6 @@
     Vue.use(BootstrapVue, VueCookies);
     Vue.component('octicon', Octicon);
     let loggedIn = false;
-    let cardUserStatus = {liked: false, blocked: false};
     let card = {
         image_uris: {border_crop: ""},
         likedCount: 0,
@@ -52,9 +58,9 @@
         oracle_text: "",
         flavor_text: "",
         set_name: "",
-        legalities:{},
-        purchase_uris:{},
-        uri:false,
+        legalities: {},
+        purchase_uris: {},
+        uri: false,
     };
     let modalOpen = false;
     export default {
@@ -65,7 +71,7 @@
             CardModal
         },
         data: function () {
-            return {loggedIn: loggedIn, card: card, cardUserStatus: cardUserStatus, modalOpen: modalOpen};
+            return {loggedIn: loggedIn, modalOpen: modalOpen, modalCard: card, drawCard: card};
         },
         methods: {
             getAccount() {
@@ -87,49 +93,47 @@
             logout() {
                 netlifyIdentity.logout();
             },
+            updateCardFromModal(card) {
+                this.modalCard = card;
+            },
+            updateDrawCard(card) {
+              this.drawCard = card;
+            },
             openModalForCard(card) {
-                this.updateCard(card);
-                this.getUserCardStatus(card.id);
+                this.modalCard = card;
                 this.$ga.event('modal_interaction', 'modal_open');
                 this.$root.$emit('bv::show::modal', 'card_modal')
             },
-            getUserCardStatus(card_id) {
-                const outerThis = this;
+            getUserCardStatus(card_id, callback = function () {
+            }) {
+                let cardStatus = DEFAULT_USER_CARD_STATUS;
                 this.getAccount().then(function (account) {
                     let data = {uuid: card_id, userid: account.id, token: account.token};
                     axios.post(API_URL + "/getUserCardStatus", data, JSON_HEADER)
                         .then(function (response) {
-                            if (outerThis.card.id === card_id) {
-                                outerThis.cardUserStatus = response.data;
-                            }
-                        });
-                }).catch(function () {
-                    outerThis.cardUserStatus = {liked: false, blocked: false};
-                })
+                            cardStatus = response.data;
+                            callback(cardStatus);
+                        }).catch(callback);
+                }).catch(callback);
             },
-            updateCard(card) {
-                this.card = card;
-            },
-            likeCard(unlike = false) {
-                const outerThis = this;
+            likeCard(uuid, unlike = false, callback = () => {
+            }) {
                 this.getAccount().then(function (account) {
-                    const data = {uuid: outerThis.card.id, userid: account.id, token: account.token};
+                    const data = {uuid: uuid, userid: account.id, token: account.token};
                     const action = unlike ? "/removeCardFromLiked" : "/addCardToLiked";
                     axios.post(API_URL + action, data, JSON_HEADER).then(function (response) {
-                        outerThis.updateCard(response.data);
-                        outerThis.getUserCardStatus(response.data.id);
+                        callback(response.data);
                     });
                 });
                 this.$ga.event('card_interaction', 'card_liked');
             },
-            dislikeCard(undislike = false) {
-                const outerThis = this;
+            dislikeCard(uuid, undislike = false, callback = () => {
+            }) {
                 this.getAccount().then(function (account) {
-                    const data = {uuid: outerThis.card.id, userid: account.id, token: account.token};
+                    const data = {uuid: uuid, userid: account.id, token: account.token};
                     const action = undislike ? "/removeCardFromBlocked" : "/addCardToBlocked";
                     axios.post(API_URL + action, data, JSON_HEADER).then(function (response) {
-                        outerThis.updateCard(response.data);
-                        outerThis.getUserCardStatus(response.data.id);
+                        callback(response.data);
                     });
                 });
                 this.$ga.event('card_interaction', 'card_disliked');
