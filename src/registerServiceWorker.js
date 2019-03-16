@@ -22,6 +22,7 @@ export function registerServiceWorker(updateCallback) {
             },
             updated() {
                 console.log('New content is available; please refresh.')
+                updateCallback();
             },
             offline() {
                 console.log('No internet connection found. App is running in offline mode.')

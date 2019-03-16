@@ -87,7 +87,7 @@
                           list="artist_list" class="mb-3">
             </b-form-input>
             <datalist id="artist_list">
-                <option v-for="artist in artists">{{artist}}</option>
+                <option v-for="artist in artists" :key="artist">{{artist}}</option>
             </datalist>
             <label for="set_input" class="w-100 text-center">
                 <b-checkbox @change="change_inclusive_set_mode" switch v-model="filter.inclusiveSetMode">
@@ -108,7 +108,7 @@
                 <div>
                     {{filter.inclusiveSetMode ? "Including" : "Excluding"}} {{display_sets().length}} sets:
                     <b-badge
-                            v-for="set in display_sets()">{{setCodesToNames[set]}}
+                            v-for="set in display_sets()" :key="set">{{setCodesToNames[set]}}
                     </b-badge>
                 </div>
 
