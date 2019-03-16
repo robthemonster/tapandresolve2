@@ -4,5 +4,6 @@ module.exports = {
         'img/icons/*',
         "js/*",
         "css/*"
-    ]
+    ],
+    skipWaiting: true
 };
