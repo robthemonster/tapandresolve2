@@ -33,6 +33,19 @@
                 <span v-if="card.legalities[format] === 'legal'" class="text-capitalize">{{format}} </span>
             </span>
         </div>
+        <div v-if="rulings.length > 0">
+            <b-button variant="outline-dark" v-b-toggle.rulings_collapse>Rulings <octicon name="chevron-down"></octicon></b-button>
+            <b-collapse id="rulings_collapse">
+                <div v-for="ruling in rulings">
+                    <p>
+                        {{ruling.comment}}<br>
+                        <i class="ml-3">-{{ruling.source !== 'wotc' ? ruling.soruce : "Wizards of the Coast"}} -
+                            {{ruling.published_at}}</i>
+                    </p>
+
+                </div>
+            </b-collapse>
+        </div>
         <div>
             <h5>Prices</h5>
             <div v-for="price in prices" :key="price">
@@ -85,7 +98,8 @@
             return {
                 prices: [],
                 purchaseLinks: [],
-                userCardStatus: DEFAULT_USER_CARD_STATUS
+                userCardStatus: DEFAULT_USER_CARD_STATUS,
+                rulings: []
             }
         },
         mounted() {
@@ -124,7 +138,7 @@
                 this.prices = [];
                 this.purchaseLinks = [];
                 const outerThis = this;
-                axios.get(this.$props.card.uri).then(function (response) {
+                axios.get(this.card.uri).then(function (response) {
                     for (const price in response.data.prices) {
                         const qty = response.data.prices[price];
                         if (qty === null) {
@@ -143,6 +157,19 @@
                     for (const link in response.data.purchase_uris) {
                         const ref = response.data.purchase_uris[link];
                         outerThis.purchaseLinks.push({ref: ref, name: link});
+                    }
+                })
+            },
+            'card.rulings_uri': function () {
+                if (!this.card.rulings_uri) {
+                    return;
+                }
+                this.rulings = [];
+                const outerThis = this;
+                console.log(this.card.rulings_uri)
+                axios.get(this.card.rulings_uri).then(function (response) {
+                    if (response.data && response.data.data) {
+                        response.data.data.forEach(data => outerThis.rulings.push(data));
                     }
                 })
             },
