@@ -20,10 +20,18 @@
             {{card.set_name}}
         </div>
         <div>
+            <h5>Artist</h5>
+            {{card.artist}}
+        </div>
+        <div class="text-capitalize">
+            <h5>Rarity</h5>
+            {{card.rarity}}
+        </div>
+        <div class="mb-1">
             <h5>Formats</h5>
-            <span v-for="format in Object.keys(card.legalities)" :key="format"><span
-                    v-if="card.legalities[format] === 'legal'"
-                    class="text-capitalize">{{format}} </span></span>
+            <span v-for="format in Object.keys(card.legalities)" :key="format">
+                <span v-if="card.legalities[format] === 'legal'" class="text-capitalize">{{format}} </span>
+            </span>
         </div>
         <div>
             <h5>Prices</h5>
