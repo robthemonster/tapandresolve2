@@ -19,6 +19,16 @@
             <h5>Set</h5>
             {{card.set_name}}
         </div>
+        <div v-if="printings.length > 1" class="my-3">
+            <b-button variant="outline-dark" v-b-toggle.printings_collapse>Other prints
+                <octicon name="chevron-down"></octicon>
+            </b-button>
+            <b-collapse id="printings_collapse">
+                <div v-for="printing in printings" :key="printing.id">
+                    <b-link v-if="printing.set !== card.set" @click="$emit('update_card_from_modal', printing)">{{printing.set_name}}</b-link>
+                </div>
+            </b-collapse>
+        </div>
         <div>
             <h5>Artist</h5>
             {{card.artist}}
@@ -33,10 +43,12 @@
                 <span v-if="card.legalities[format] === 'legal'" class="text-capitalize">{{format}} </span>
             </span>
         </div>
-        <div v-if="rulings.length > 0">
-            <b-button variant="outline-dark" v-b-toggle.rulings_collapse>Rulings <octicon name="chevron-down"></octicon></b-button>
+        <div v-if="rulings.length > 0" class="my-3">
+            <b-button variant="outline-dark" v-b-toggle.rulings_collapse>Rulings
+                <octicon name="chevron-down"></octicon>
+            </b-button>
             <b-collapse id="rulings_collapse">
-                <div v-for="ruling in rulings">
+                <div v-for="ruling in rulings" :key="ruling.comment">
                     <p>
                         {{ruling.comment}}<br>
                         <i class="ml-3">-{{ruling.source !== 'wotc' ? ruling.soruce : "Wizards of the Coast"}} -
@@ -99,7 +111,8 @@
                 prices: [],
                 purchaseLinks: [],
                 userCardStatus: DEFAULT_USER_CARD_STATUS,
-                rulings: []
+                rulings: [],
+                printings: []
             }
         },
         mounted() {
@@ -166,12 +179,23 @@
                 }
                 this.rulings = [];
                 const outerThis = this;
-                console.log(this.card.rulings_uri)
                 axios.get(this.card.rulings_uri).then(function (response) {
                     if (response.data && response.data.data) {
                         response.data.data.forEach(data => outerThis.rulings.push(data));
                     }
                 })
+            },
+            'card.prints_search_uri': function () {
+                if (!this.card.prints_search_uri) {
+                    return;
+                }
+                this.printings = [];
+                const outerThis = this;
+                axios.get(this.card.prints_search_uri).then(function (response) {
+                    if (response.data && response.data.data) {
+                        response.data.data.forEach(printing => outerThis.printings.push(printing));
+                    }
+                });
             },
             'card': {
                 handler() {
