@@ -25,7 +25,7 @@
             </b-button>
             <b-collapse id="printings_collapse">
                 <div v-for="printing in printings" :key="printing.id">
-                    <b-link v-if="printing.set !== card.set" @click="$emit('update_card_from_modal', printing)">{{printing.set_name}}</b-link>
+                    <b-link v-if="printing.set !== card.set" @click="updateCardFromModal(printing)">{{printing.set_name}}</b-link>
                 </div>
             </b-collapse>
         </div>
