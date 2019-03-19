@@ -95,24 +95,37 @@
                 </b-checkbox>
                 these sets</label>
             <b-form>
-
                 <b-form-input id="set_input" placeholder="Set name"
                               :state="set_name_exists"
                               v-model="set_input" list="set_list" class="my-2"></b-form-input>
                 <b-button @click="add_or_exclude_set()" v-bind:class="add_exclude_button_class"
                           v-bind:variant="add_exclude_button_variant">{{filter.inclusiveSetMode ? "Include" :
                     "Exclude"}}
-                    set
+                    {{set_input}}
                 </b-button>
-                <b-button @click="reset_excluded_set_list" :pressed="display_sets().length >0" class="mx-2" variant="outline-warning">Reset set filter</b-button>
-                <div>
-                    {{filter.inclusiveSetMode ? "Including" : "Excluding"}} {{display_sets().length}} sets:
-                    <b-badge
-                            v-for="set in display_sets()" :key="set">{{setCodesToNames[set]}}
-                    </b-badge>
-                </div>
-
             </b-form>
+            <b-form>
+                <b-button class="my-1" v-b-toggle.super_set_collapse>{{filter.inclusiveSetMode ? "Include" : "Exclude"}}
+                    super
+                    sets
+                </b-button>
+                <b-collapse id="super_set_collapse">
+                    <b-button @click="add_super_set(superset)" v-for="superset in supersets"
+                              :variant="filter.inclusiveSetMode ? 'success' : 'danger'" class="m-1 text-capitalize">
+                        {{superset.replace(/_/g, " ")}}
+                    </b-button>
+                </b-collapse>
+            </b-form>
+
+            <b-button @click="reset_excluded_set_list" :pressed="display_sets().length >0" class="my-1"
+                      variant="outline-warning">Reset set filter
+            </b-button>
+            <div id="set_badge_div">
+                {{filter.inclusiveSetMode ? "Including only" : "Excluding"}} {{display_sets().length}} sets:
+                <b-badge
+                        v-for="set in display_sets()" :key="set">{{setCodesToNames[set]}}
+                </b-badge>
+            </div>
 
             <datalist id="set_list">
                 <option v-for="set in this.sets" :key="set.code">{{set.name}}</option>
@@ -123,6 +136,8 @@
 </template>
 
 <script>
+    import {API_URL, SETS_BY_CATEGORY} from "../../constants";
+
     const deep_equal = require('deep-equal');
 
     function removeFromList(list, value) {
@@ -145,8 +160,6 @@
         });
         return newList;
     }
-
-    import {API_URL} from "../../constants"
 
     const axios = require('axios');
     const DEFAULT_FILTER = {
@@ -216,7 +229,8 @@
                 setNames: setNames,
                 setNamesToCodes: setNamesToCodes,
                 setCodesToNames: setCodesToNames,
-                set_input: ""
+                set_input: "",
+                supersets: Object.keys(SETS_BY_CATEGORY)
             }
         },
         mounted() {
@@ -275,6 +289,17 @@
                 } else {
                     return listDifference(Object.keys(this.setCodesToNames), this.filter.excludedSets);
                 }
+            },
+            add_super_set(superset) {
+                console.log(superset);
+                if (this.filter.inclusiveSetMode) {
+                    this.filter.excludedSets = listDifference(this.filter.excludedSets, SETS_BY_CATEGORY[superset]);
+                } else {
+                    console.log(SETS_BY_CATEGORY[superset]);
+                    let concat = this.filter.excludedSets.concat(SETS_BY_CATEGORY[superset]);
+                    console.log(concat);
+                    this.filter.excludedSets = [...new Set(concat)]
+                }
             }
         },
         computed: {
@@ -304,5 +329,8 @@
 </script>
 
 <style scoped>
-
+    #set_badge_div {
+        max-height: 25vh;
+        overflow-y: scroll;
+    }
 </style>
