@@ -246,7 +246,7 @@
                 return deep_equal(this.filter, this.defaultFilter);
             },
             resetFilter: function () {
-                Object.assign(this.filter, this.defaultFilter);
+                this.filter = JSON.parse(JSON.stringify(this.defaultFilter));
                 this.set_input = "";
             },
             add_or_exclude_set() {
