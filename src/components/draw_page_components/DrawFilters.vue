@@ -90,7 +90,7 @@
                 <option v-for="artist in artists" :key="artist">{{artist}}</option>
             </datalist>
             <label for="set_input" class="w-100 text-center">
-                <b-checkbox @change="change_inclusive_set_mode" switch v-model="filter.inclusiveSetMode">
+                <b-checkbox @change="change_inclusive_set_mode" :class="filter.inclusiveSetMode ? 'text-success':'text-danger'"  switch v-model="filter.inclusiveSetMode">
                     <b>{{filter.inclusiveSetMode ? "Include" : "Exclude"}}</b>
                 </b-checkbox>
                 these sets</label>
