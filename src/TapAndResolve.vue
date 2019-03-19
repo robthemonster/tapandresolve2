@@ -103,6 +103,13 @@
             },
             updateCardFromModal(card) {
                 this.modalCard = card;
+                const outerThis = this;
+                if (card.id && (card.likedCount === undefined || card.dislikedCount === undefined)) {
+                    const data = {uuid: card.id};
+                    axios.post(API_URL + '/getLikedRatio', data, JSON_HEADER).then(function (response) {
+                        outerThis.modalCard = response.data;
+                    });
+                }
             },
             updateDrawCard(card) {
                 this.drawCard = card;
