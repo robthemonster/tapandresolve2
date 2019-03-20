@@ -291,13 +291,10 @@
                 }
             },
             add_super_set(superset) {
-                console.log(superset);
                 if (this.filter.inclusiveSetMode) {
                     this.filter.excludedSets = listDifference(this.filter.excludedSets, SETS_BY_CATEGORY[superset]);
                 } else {
-                    console.log(SETS_BY_CATEGORY[superset]);
                     let concat = this.filter.excludedSets.concat(SETS_BY_CATEGORY[superset]);
-                    console.log(concat);
                     this.filter.excludedSets = [...new Set(concat)]
                 }
             }

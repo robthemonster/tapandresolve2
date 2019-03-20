@@ -76,12 +76,6 @@
             return {loggedIn: loggedIn, modalOpen: modalOpen, modalCard: card, drawCard: card};
         },
         methods: {
-            updateCallback() {
-                this.$toasted.show('An update is available. Please refresh', {
-                    position: "bottom-center",
-                    singleton: true
-                });
-            },
             getAccount() {
                 return new Promise(function (resolve, reject) {
                     if (netlifyIdentity.currentUser()) {
@@ -155,7 +149,7 @@
             }
         },
         mounted() {
-            registerServiceWorker(this.updateCallback);
+            registerServiceWorker();
             const outerThis = this;
             netlifyIdentity.on('init', user => {
                 if (user) {
