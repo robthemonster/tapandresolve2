@@ -17,7 +17,7 @@
         </div>
         <div>
             <h5>Set</h5>
-            {{card.set_name}}
+            <b-img style="width:32px;" :src="setIcons[card.set]"></b-img> {{card.set_name}}
         </div>
         <div v-if="printings.length > 1" class="my-3">
             <b-button variant="outline-dark" v-b-toggle.printings_collapse>Other prints
@@ -25,7 +25,9 @@
             </b-button>
             <b-collapse id="printings_collapse">
                 <div v-for="printing in printings" :key="printing.id">
-                    <b-link v-if="printing.set !== card.set" @click="updateCardFromModal(printing)">{{printing.set_name}}</b-link>
+                    <b-link v-if="printing.set !== card.set" @click="updateCardFromModal(printing)">
+                        <b-img style="width:32px;" :src="setIcons[printing.set]"></b-img> {{printing.set_name}}
+                    </b-link>
                 </div>
             </b-collapse>
         </div>
@@ -51,7 +53,7 @@
                 <div v-for="ruling in rulings" :key="ruling.comment">
                     <p>
                         {{ruling.comment}}<br>
-                        <i class="ml-3">-{{ruling.source !== 'wotc' ? ruling.soruce : "Wizards of the Coast"}} -
+                        <i class="ml-3">-{{ruling.source !== 'wotc' ? ruling.source : "Wizards of the Coast"}} -
                             {{ruling.published_at}}</i>
                     </p>
 
@@ -100,7 +102,7 @@
 <script>
     import DrawCardImage from "./draw_page_components/DrawCardImage"
     import DrawCardVoteBar from "./draw_page_components/DrawCardVoteBar"
-    import {DEFAULT_USER_CARD_STATUS} from "@/constants";
+    import {DEFAULT_USER_CARD_STATUS, SET_ICONS} from "@/constants";
 
     const axios = require('axios');
     export default {
@@ -111,6 +113,7 @@
                 prices: [],
                 purchaseLinks: [],
                 userCardStatus: DEFAULT_USER_CARD_STATUS,
+                setIcons: SET_ICONS,
                 rulings: [],
                 printings: []
             }
