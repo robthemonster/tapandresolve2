@@ -17,7 +17,8 @@
         </div>
         <div>
             <h5>Set</h5>
-            <b-img style="width:32px;" :src="setIcons[card.set]"></b-img> {{card.set_name}}
+            <b-img style="width:32px;" :src="setIcons[card.set]"></b-img>
+            {{card.set_name}}
         </div>
         <div v-if="printings.length > 1" class="my-3">
             <b-button variant="outline-dark" v-b-toggle.printings_collapse>Other prints
@@ -25,8 +26,15 @@
             </b-button>
             <b-collapse id="printings_collapse">
                 <div v-for="printing in printings" :key="printing.id">
-                    <b-link v-if="printing.set !== card.set" @click="updateCardFromModal(printing)">
-                        <b-img style="width:32px;" :src="setIcons[printing.set]"></b-img> {{printing.set_name}}
+                    <b-link v-if="printing.id !== card.id" @click="updateCardFromModal(printing)">
+                        <b-row class="w-auto">
+                            <b-col cols="2" class="text-center">
+                                <b-img style="height:32px;" :src="setIcons[printing.set]"></b-img>
+                            </b-col>
+                            <b-col>
+                                <span class="text-uppercase" v-b-tooltip.hover :title="printing.set_name">{{printing.set}}</span>
+                            </b-col>
+                        </b-row>
                     </b-link>
                 </div>
             </b-collapse>
