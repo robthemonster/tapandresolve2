@@ -1,9 +1,9 @@
 <template>
     <b-row>
         <b-col>
-            <div id="image_div" class="text-center d-flex justify-content-center">
+            <div id="image_div" :class="!loading ? 'text-center' : 'text-center d-flex align-items-center '">
                 <b-img v-if="!loading" fluid v-bind:src="loadedUrl" :alt="card_name"></b-img>
-                <b-spinner v-if="loading" class="my-auto"></b-spinner>
+                <b-spinner v-if="loading" class="mx-auto"></b-spinner>
             </div>
         </b-col>
     </b-row>
@@ -16,12 +16,12 @@
             return {loading: true, loadedUrl: ""}
         },
         name: "DrawCardImage",
-        watch:{
-            'image_uri' : function() {
+        watch: {
+            'image_uri': function () {
                 const image = new Image();
                 this.loading = true;
                 const outerThis = this;
-                image.onload = function() {
+                image.onload = function () {
                     outerThis.loadedUrl = outerThis.image_uri;
                     outerThis.loading = false;
                 };
@@ -33,6 +33,6 @@
 
 <style scoped>
     #image_div {
-        height: 680px;
+        min-height: 65vh;
     }
 </style>
