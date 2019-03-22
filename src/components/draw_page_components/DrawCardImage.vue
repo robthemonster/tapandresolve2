@@ -33,6 +33,6 @@
 
 <style scoped>
     #image_div {
-        min-height: 65vh;
+        min-height: 50vh;
     }
 </style>
