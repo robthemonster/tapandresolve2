@@ -39,6 +39,17 @@
                 </div>
             </b-collapse>
         </div>
+        <div v-if="card.all_parts">
+            <b-button variant="outline-dark" v-b-toggle.related_cards_collapse>
+                Related cards
+                <octicon name="chevron-down"></octicon>
+            </b-button>
+            <b-collapse id="related_cards_collapse">
+                <div v-for="part in card.all_parts">
+                    <b-link v-if="part.id !== card.id" @click="fetchCardFromUri(part.uri)">{{part.name}}</b-link>
+                </div>
+            </b-collapse>
+        </div>
         <div>
             <h5>Artist</h5>
             {{card.artist}}
@@ -152,6 +163,12 @@
             },
             updateCardFromModal(card) {
                 this.$emit('update_card_from_modal', card);
+            },
+            fetchCardFromUri(uri) {
+                const outerThis = this;
+                axios.get(uri).then(function (response) {
+                    outerThis.$emit('update_card_from_modal', response.data);
+                })
             }
         },
         watch: {
