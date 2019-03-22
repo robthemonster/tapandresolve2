@@ -16,8 +16,16 @@
             return {loading: true, loadedUrl: ""}
         },
         name: "DrawCardImage",
+        mounted() {
+            this.loadImage();
+        },
         watch: {
             'image_uri': function () {
+                this.loadImage();
+            }
+        },
+        methods: {
+            loadImage() {
                 const image = new Image();
                 this.loading = true;
                 const outerThis = this;
