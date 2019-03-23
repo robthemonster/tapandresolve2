@@ -45,7 +45,7 @@
                 <octicon name="chevron-down"></octicon>
             </b-button>
             <b-collapse id="related_cards_collapse">
-                <div v-for="part in card.all_parts">
+                <div v-for="part in card.all_parts" :key="part.id">
                     <b-link v-if="part.id !== card.id" @click="fetchCardFromUri(part.uri)">{{part.name}}</b-link>
                 </div>
             </b-collapse>
@@ -86,7 +86,6 @@
             </div>
         </div>
         <div>
-            <h5>Purchase links</h5>
             <div v-for="link in purchaseLinks" :key="link.name">
                 <b-link class="text-capitalize font-weight-bold" target="_blank" :href="link.ref">{{link.name}}</b-link>
             </div>
