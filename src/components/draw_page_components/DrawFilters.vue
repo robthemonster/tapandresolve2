@@ -41,6 +41,23 @@
                     <b-img fluid src="https://tapandresolve.com/assets/G.png" alt="green"></b-img>
                 </b-form-checkbox>
             </b-form-checkbox-group>
+            <b-row class="justify-content-start">
+                <b-col>
+                    <b-form-checkbox id="restrictCmc_switch" v-model="filter.restrictCmc" switch> {{filter.restrictCmc ? 'Mana cost: ' + filter.cmc : 'Any mana cost'}}</b-form-checkbox>
+
+                </b-col>
+            </b-row>
+            <b-col cols="7" lg="3">
+                <b-input-group class="my-3"  v-if="filter.restrictCmc">
+                    <b-button @click="filter.cmc = Math.max(filter.cmc - 1, 0)">
+                        <octicon name="dash"></octicon>
+                    </b-button>
+                    <b-form-input class="text-center" readonly v-model="filter.cmc"></b-form-input>
+                    <b-button @click="filter.cmc = Math.min(filter.cmc + 1, 16)">
+                        <octicon name="plus"></octicon>
+                    </b-button>
+                </b-input-group>
+            </b-col>
             <label for="types_group">
                 <b-button v-b-toggle.types_collapse>Allow these <b>types</b></b-button>
             </label>
@@ -90,7 +107,9 @@
                 <option v-for="artist in artists" :key="artist">{{artist}}</option>
             </datalist>
             <label for="set_input" class="w-100 text-center">
-                <b-checkbox @change="change_inclusive_set_mode" :class="filter.inclusiveSetMode ? 'text-success':'text-danger'"  switch v-model="filter.inclusiveSetMode">
+                <b-checkbox @change="change_inclusive_set_mode"
+                            :class="filter.inclusiveSetMode ? 'text-success':'text-danger'" switch
+                            v-model="filter.inclusiveSetMode">
                     <b>{{filter.inclusiveSetMode ? "Include" : "Exclude"}}</b>
                 </b-checkbox>
                 these sets</label>
@@ -211,6 +230,8 @@
         artist: "",
         inclusiveSetMode: false,
         excludedSets: [],
+        restrictCmc: false,
+        cmc: 0
     };
     let currentFilter = DEFAULT_FILTER;
     let artists = [];

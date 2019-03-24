@@ -73,7 +73,9 @@
             rare: false,
             mythic: false
         },
-        artist: ""
+        artist: "",
+        restrictCmc: false,
+        cmc: 0
     };
     export default {
         props: ['loggedIn', 'modalOpen', 'drawCard'],
@@ -157,6 +159,8 @@
                 this.currentFilters.commandersOnly = filter.commanders_only;
                 this.currentFilters.artist = filter.artist;
                 this.currentFilters.excludedSets = filter.excludedSets;
+                this.currentFilters.restrictCmc = filter.restrictCmc;
+                this.currentFilters.cmc = filter.cmc;
 
                 this.updateFilterSize();
 
