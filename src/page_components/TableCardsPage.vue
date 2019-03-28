@@ -8,27 +8,36 @@
             <datalist id="filtered_card_list">
                 <option v-for="card in filteredCards" :key="card.id">{{card.name}}</option>
             </datalist>
-            <CardList :card_list="filteredCards" v-on:open_modal="open_modal"></CardList>
+            <CardList :card_list="displayedCards" v-on:open_modal="open_modal"></CardList>
+            <infinite-loading ref="infiniteLoader" :identifier="JSON.stringify(filteredCards)" class="text-white"
+                              @infinite="addPage">
+                <div slot="no-more">No more cards</div>
+                <div slot="no-results">No cards</div>
+            </infinite-loading>
         </b-container>
     </div>
 </template>
 
 <script>
     import CardList from "../components/CardList.vue"
-    import {API_URL} from '../constants'
-    import {JSON_HEADER} from "@/constants";
+    import {API_URL, JSON_HEADER} from '../constants'
+    import InfiniteLoading from 'vue-infinite-loading';
 
     const axios = require('axios');
 
     let cards = [];
     export default {
         components: {
-            CardList
+            CardList,
+            InfiniteLoading
         },
         data: function () {
             return {
                 cards: [],
+                page: 0,
+                PAGE_SIZE: 15,
                 filteredCards: cards,
+                displayedCards: cards,
                 filterString: ""
             };
         },
@@ -38,6 +47,8 @@
             },
             filterCards() {
                 let filteredCards = [];
+                this.page = 0;
+                this.$refs.infiniteLoader.stateChanger.reset();
                 const filterString = this.filterString.toLowerCase();
                 this.cards.forEach(function (card) {
                     if (card.name.toLowerCase().includes(filterString)) {
@@ -45,6 +56,7 @@
                     }
                 });
                 this.filteredCards = filteredCards;
+                this.displayedCards = filteredCards.slice(0, this.PAGE_SIZE);
             },
             fetchCards() {
                 const outerThis = this;
@@ -53,8 +65,18 @@
                     axios.post(API_URL + outerThis.apiPath, data, JSON_HEADER).then(function (response) {
                         outerThis.cards = response.data;
                         outerThis.filterCards();
-                    })
+                    });
                 });
+            },
+            addPage($state) {
+                if (this.page * this.PAGE_SIZE < this.filteredCards.length) {
+                    this.page++;
+                    this.displayedCards.push(... this.filteredCards.slice(this.page * this.PAGE_SIZE,
+                        Math.min(this.filteredCards.length, (this.page + 1) * this.PAGE_SIZE)));
+                    $state.loaded();
+                } else {
+                    $state.complete();
+                }
             }
         },
         mounted() {
