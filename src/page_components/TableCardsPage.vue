@@ -89,10 +89,6 @@
         },
         mounted() {
             this.fetchCards(0);
-            let outerThis = this;
-            this.$root.$on('bv::modal::hidden',async () => {
-                await outerThis.fetchCards(0)
-            });
         },
         props: ['loggedIn', 'apiPath'],
         watch: {
