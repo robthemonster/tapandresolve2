@@ -37,7 +37,7 @@
                     free to reach out.
                 </p>
                 <p>
-                    Tap and Resolve is a self funded passion project. If (and <b>only if</b>) you are satisfied with my
+                    Tap and Resolve is a self funded passion project. If you are satisfied with my
                     work, you may donate to help mitigate web hosting and development costs.
                 </p>
                 <b-row class="justify-content-center">
